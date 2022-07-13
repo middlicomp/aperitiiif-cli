@@ -18,7 +18,7 @@ module Apertiiif
   class Batch
     # attr_reader :items
     def initialize
-      @items ||= items
+      @items = items
     end
 
     def reset
