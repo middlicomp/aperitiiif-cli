@@ -6,7 +6,7 @@ module Apertiiif
   class Config
     CONFIG_FILE = './config.yml'
 
-    def initialize(config)
+    def initialize(config = nil)
       @hash = config || SafeYAML.load_file(CONFIG_FILE)
     end
 

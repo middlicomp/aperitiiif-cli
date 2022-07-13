@@ -1,31 +1,62 @@
 # frozen_string_literal: true
 
 require 'fileutils'
+require 'progress_bar'
+require 'rainbow'
 require 'safe_yaml'
+require 'vips'
 
+require_relative 'asset'
 require_relative 'config'
-require_relative 'api/image'
-require_relative 'api/presentation'
+require_relative 'item'
 
 # TO DO COMMENT
 module Apertiiif
+  CONFIG = Apertiiif::Config.new
+
   # TO DO COMMENT
   class Batch
-    include Apertiiif::Api::Image
-    include Apertiiif::Api::Presentation
-
-    attr_reader :config
-
-    def initialize(config = nil)
-      @config = Apertiiif::Config.new config
+    # attr_reader :items
+    def initialize
+      @items ||= items
     end
 
-    def source_files
-      Dir.glob("#{@config.source_dir}/**/*").select { |f| File.file? f }
+    def reset
+      puts Rainbow('Resetting build...').cyan
+      FileUtils.rm_rf CONFIG.build_dir
     end
 
-    def tif_files
-      Dir.glob("#{@config.image_build_dir}/**/*").select { |f| File.file? f }
+    def items
+      Dir.glob("#{CONFIG.source_dir}/*").map do |f|
+        assets = File.file?(f) ? [f] : Dir.glob("#{f}/*")
+        id     = "#{CONFIG.batch_namespace}_#{Apertiiif::Utils.basename(f)}"
+        Apertiiif::Item.new(id, assets, {})
+      end
+    end
+
+    def assets
+      @assets ||= @items.flat_map(&:assets)
+    end
+
+    def build_image_api
+      FileUtils.mkdir_p CONFIG.image_build_dir
+      bar = ProgressBar.new assets.length
+      puts Rainbow('Writing target TIFs...').cyan
+      assets.each do |a|
+        a.write_to_target
+        bar.increment!
+      end
+      puts Rainbow('Done ✓').green
+    end
+
+    def build_presentation_api
+      FileUtils.mkdir_p CONFIG.presentation_build_dir
+      bar = ProgressBar.new @items.length
+      puts Rainbow('Creating IIIF Presentation JSON...').cyan
+      @items.reverse_each do |i|
+        i.write_to_json
+        bar.increment!
+      end
     end
   end
 end

@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
     end
   end
 
-  spec.bindir         = 'exe'
+  spec.bindir         = 'bin'
   spec.executables    = ['apertiiif']
   spec.require_paths  = ['lib']
 
@@ -30,4 +30,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'rainbow'
   spec.add_dependency 'ruby-vips'
   spec.add_dependency 'safe_yaml'
+  spec.add_dependency 'thor'
 end

@@ -3,6 +3,4 @@
 
 require 'apertiiif'
 
-batch = Apertiiif::Batch.new
-batch.image_api
-batch.presentation_api
+Apertiiif::BatchBuilder.start
