@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'lib/apertiiif/cli/version'
+require_relative 'lib/apertiiif/version'
 
 Gem::Specification.new do |spec|
-  spec.name     = 'apertiiif-cli'
-  spec.version  = Apertiiif::Cli::VERSION
+  spec.name     = 'apertiiif'
+  spec.version  = Apertiiif::VERSION
   spec.authors  = ['mnyrop']
   spec.email    = ['marii@nyu.edu']
   spec.summary  = ''
@@ -21,11 +21,13 @@ Gem::Specification.new do |spec|
   end
 
   spec.bindir         = 'exe'
-  spec.executables    = ['apertiiif-cli']
+  spec.executables    = ['apertiiif']
   spec.require_paths  = ['lib']
 
   spec.add_dependency 'iiif-presentation'
   spec.add_dependency 'mimemagic'
+  spec.add_dependency 'progress_bar'
+  spec.add_dependency 'rainbow'
   spec.add_dependency 'ruby-vips'
   spec.add_dependency 'safe_yaml'
 end

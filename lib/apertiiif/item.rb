@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
+# to do
 module Apertiiif
-  module Cli
-    VERSION = '0.1.0'
-  end
+  # to do
+  class Item; end
 end

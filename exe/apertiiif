@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'apertiiif'
+
+batch = Apertiiif::Batch.new
+batch.image_api
+batch.presentation_api
