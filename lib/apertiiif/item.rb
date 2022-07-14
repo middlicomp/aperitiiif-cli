@@ -34,10 +34,28 @@ module Apertiiif
       "#{CONFIG.presentation_build_dir}/#{@id}/manifest.json"
     end
 
-    def write_to_json
+    def write_presentation_json
       FileUtils.mkdir_p File.dirname(manifest_file)
       manifest = build_manifest
       File.open(manifest_file, 'w') { |m| m.write manifest.to_json(pretty: true) }
+    end
+
+    def to_hash
+      {
+        'id' => @id,
+        'manifest' => manifest_url,
+        'thumbnail' => @assets.first.thumbnail_url
+      }
+    end
+
+    def to_html_list_item
+      <<~HTML
+        <li>
+          <b>#{@id}:</b>
+          <a href='#{manifest_url}'>iiif manifest</a>,
+          <a href='#{@assets.first.thumbnail_url}'>thumbnail</a>
+        </li>
+      HTML
     end
   end
 end

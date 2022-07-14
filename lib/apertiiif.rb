@@ -12,7 +12,7 @@ module Apertiiif
   class Error < StandardError; end
 
   # TO DO COMMENT
-  class BatchBuilder < Thor
+  class CLI < Thor
     map %w[--version -v] => :__print_version
     desc '--version, -v', 'print the version'
     def __print_version
@@ -26,7 +26,8 @@ module Apertiiif
       batch.reset if options[:reset]
       batch.build_image_api
       batch.build_presentation_api
-      # batch.validate
+      batch.build_html_index
+      batch.build_json_index
     end
   end
 end
