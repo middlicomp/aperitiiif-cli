@@ -18,6 +18,10 @@ module Apertiiif
       "#{CONFIG.presentation_api_url}/#{@id}/manifest.json"
     end
 
+    def viewpoint_url
+      "https://dss.hosting.nyu.edu/viewpoint/mirador/#manifests[]=#{CGI.escape manifest_url}&theme=dark"
+    end
+
     def seed
       { '@id' => manifest_url, 'label' => @id }
     end
@@ -52,8 +56,9 @@ module Apertiiif
       <<~HTML
         <li>
           <b>#{@id}:</b>
-          <a href='#{manifest_url}'>iiif manifest</a>,
-          <a href='#{@assets.first.thumbnail_url}'>thumbnail</a>
+          <a target='_blank' href='#{manifest_url}'>iiif manifest</a>,
+          <a target='_blank' href='#{@assets.first.thumbnail_url}'>thumb</a>,
+          <a target='_blank' href='#{viewpoint_url}'>view in viewpoint</a>
         </li>
       HTML
     end

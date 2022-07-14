@@ -98,12 +98,16 @@ module Apertiiif
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta http-equiv="X-UA-Compatible" content="ie=edge">
             <title>apertiiif batch listing: #{CONFIG.batch_namespace}</title>
+            <style>
+              body {
+                font-family: Sans-Serif;
+              }
+            </style>
           </head>
           <body>
             <h1>#{CONFIG.batch_namespace} aperiiif batch</h1>
             <p>last updated #{Apertiiif::Utils.formatted_time}</p>
-            <p>#{@items.length} total items in batch</p>
-            <h2>published items</h2>
+            <h2>published items (#{@items.length})</h2>
             <ul>
               #{@items.map(&:to_html_list_item).join("\n")}
             </ul>
