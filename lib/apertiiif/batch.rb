@@ -105,7 +105,7 @@ module Apertiiif
             </style>
           </head>
           <body>
-            <h1>#{CONFIG.batch_namespace} aperiiif batch</h1>
+            <h1>#{CONFIG.batch_namespace} apertiiif batch</h1>
             <p>last updated #{Apertiiif::Utils.formatted_time}</p>
             <h2>published items (#{@items.length})</h2>
             <ul>
