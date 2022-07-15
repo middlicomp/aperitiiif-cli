@@ -2,7 +2,6 @@
 
 require 'iiif/presentation'
 require 'mimemagic'
-require 'vips'
 
 # to do
 module Apertiiif
@@ -11,6 +10,8 @@ module Apertiiif
     attr_reader :id
 
     def initialize(source)
+      require 'vips' # don't require vips if linting only
+
       @source = source
       @target = target
       @id     = Apertiiif::Utils.basename @target
