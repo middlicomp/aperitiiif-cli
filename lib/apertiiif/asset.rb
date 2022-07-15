@@ -2,6 +2,7 @@
 
 require 'iiif/presentation'
 require 'mimemagic'
+require 'vips'
 
 # to do
 module Apertiiif

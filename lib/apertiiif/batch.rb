@@ -7,7 +7,6 @@ require 'parallel'
 require 'progress_bar'
 require 'rainbow'
 require 'safe_yaml'
-require 'vips'
 
 require_relative 'batch/indexable'
 require_relative 'batch/lintable'
