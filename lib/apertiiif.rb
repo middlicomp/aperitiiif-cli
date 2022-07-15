@@ -2,7 +2,11 @@
 
 require 'thor'
 
+require_relative 'apertiiif/config'
 require_relative 'apertiiif/batch'
+
+require_relative 'apertiiif/asset'
+require_relative 'apertiiif/item'
 require_relative 'apertiiif/version'
 require_relative 'apertiiif/utils'
 
@@ -21,15 +25,26 @@ module Apertiiif
 
     desc 'build', 'build the batch'
     option :reset
-    option :audit
+    option :lint
     def build
       batch = Apertiiif::Batch.new
       batch.reset if options[:reset]
-      batch.audit_records if options[:audit]
+      batch.lint  if options[:lint]
+
       batch.build_image_api
       batch.build_presentation_api
       batch.build_html_index
       batch.build_json_index
+    end
+
+    desc 'reset', 'reset the batch'
+    def reset
+      Apertiiif::Batch.new.reset
+    end
+
+    desc 'lint', 'lint the batch'
+    def lint
+      Apertiiif::Batch.new.lint
     end
   end
 end

@@ -5,7 +5,11 @@ module Apertiiif
   # TO DO COMMENT
   module Utils
     def self.basename(str)
-      File.basename(str).sub File.extname(str), ''
+      rm_ext File.basename(str)
+    end
+
+    def self.rm_ext(str)
+      str.sub File.extname(str), ''
     end
 
     def self.prune_prefix_junk(str)
@@ -23,6 +27,10 @@ module Apertiiif
     def self.formatted_time
       time = Time.now
       "#{time.month}/#{time.day}/#{time.year} at #{time.hour}:#{time.min.to_s.rjust(2, '0')}#{time.zone}"
+    end
+
+    def self.rm_source_dir(str)
+      str.sub(CONFIG.source_dir, '')
     end
   end
 end
