@@ -21,9 +21,11 @@ module Apertiiif
 
     desc 'build', 'build the batch'
     option :reset
+    option :audit
     def build
       batch = Apertiiif::Batch.new
       batch.reset if options[:reset]
+      batch.audit_records if options[:audit]
       batch.build_image_api
       batch.build_presentation_api
       batch.build_html_index

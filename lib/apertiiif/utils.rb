@@ -8,12 +8,16 @@ module Apertiiif
       File.basename(str).sub File.extname(str), ''
     end
 
+    def self.prune_prefix_junk(str)
+      str.sub(/^(_|\W)/, '')
+    end
+
     def self.rm_batch_namespace(str)
-      str.sub CONFIG.batch_namespace, ''
+      prune_prefix_junk(str.sub(CONFIG.batch_namespace, ''))
     end
 
     def self.rm_service_namespace(str)
-      str.sub CONFIG.service_namespace, ''
+      prune_prefix_junk(str.sub(CONFIG.service_namespace, ''))
     end
 
     def self.formatted_time

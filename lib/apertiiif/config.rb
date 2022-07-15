@@ -4,9 +4,10 @@
 module Apertiiif
   # TO DO COMMENT
   class Config
-    DEFAULT_CONFIG_FILE = './config.yml'
-    DEFAULT_BUILD_DIR   = './build'
-    DEFAULT_SOURCE_DIR  = './src/data'
+    DEFAULT_CONFIG_FILE  = './config.yml'
+    DEFAULT_BUILD_DIR    = './build'
+    DEFAULT_SOURCE_DIR   = './src/data'
+    DEFAULT_RECORDS_FILE = './src/records.csv'
 
     def initialize(config = nil)
       @hash = config || SafeYAML.load_file(DEFAULT_CONFIG_FILE)
@@ -34,6 +35,14 @@ module Apertiiif
 
     def html_build_dir
       "#{build_dir}/html"
+    end
+
+    def records_file
+      @hash.dig 'records', 'file' || DEFAULT_RECORDS_FILE
+    end
+
+    def records_defaults
+      @hash.dig 'records', 'defaults' || {}
     end
 
     def image_api_url

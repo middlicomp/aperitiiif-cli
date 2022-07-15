@@ -6,12 +6,15 @@ require 'iiif/presentation'
 module Apertiiif
   # to do
   class Item
-    attr_reader :id, :assets
+    attr_reader :id, :assets, :record
 
-    def initialize(id, assets, record = {})
-      @id       = id
-      @record   = record
+    CUSTOM_METADATA_PREFIX = 'meta.'
+
+    def initialize(id, assets, record = nil)
+      @id       = [CONFIG.batch_namespace, id].join '_'
       @assets   = assets.map { |a| Apertiiif::Asset.new a }
+      @record   = record
+      @seed     = seed
     end
 
     def manifest_url
@@ -22,12 +25,50 @@ module Apertiiif
       "https://dss.hosting.nyu.edu/viewpoint/mirador/#manifests[]=#{CGI.escape manifest_url}&theme=dark"
     end
 
+    def label
+      @record&.label || @id
+    end
+
+    def logo
+      @record&.logo || nil
+    end
+
+    def description
+      @record&.description || nil
+    end
+
+    def source
+      @record&.source || nil
+    end
+
+    # rubocop:disable Metrics/AbcSize
     def seed
-      { '@id' => manifest_url, 'label' => @id }
+      s                 = {}
+      s['@id']          = manifest_url
+      s['label']        = label
+      s['logo']         = logo unless logo.nil?
+      s['description']  = description unless description.nil?
+      s['source']       = source unless source.nil?
+      s['metadata']     = custom_metadata || []
+      s
+    end
+    # rubocop:enable Metrics/AbcSize
+
+    def custom_metadata_keys
+      @record.to_h.keys.select { |k| k.to_s.start_with?(CUSTOM_METADATA_PREFIX) } || []
+    end
+
+    def custom_metadata
+      custom_metadata_keys.map do |k|
+        {
+          'label' => k.to_s.delete_prefix(CUSTOM_METADATA_PREFIX),
+          'value' => @record[k]
+        }
+      end
     end
 
     def build_manifest
-      manifest = IIIF::Presentation::Manifest.new seed
+      manifest = IIIF::Presentation::Manifest.new @seed
       sequence = IIIF::Presentation::Sequence.new
       sequence.canvases = @assets.map(&:canvas)
       manifest.sequences << sequence

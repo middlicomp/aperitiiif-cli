@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'csv'
 require 'fileutils'
 require 'json'
 require 'parallel'
@@ -20,20 +21,47 @@ module Apertiiif
   class Batch
     # attr_reader :items
     def initialize
+      @records = records
       @items = items
     end
 
     def reset
       puts Rainbow('Resetting build...').cyan
       FileUtils.rm_rf CONFIG.build_dir
+      puts Rainbow('Done ✓').green
     end
 
     def items
       Dir.glob("#{CONFIG.source_dir}/*").map do |f|
-        assets = File.file?(f) ? [f] : Dir.glob("#{f}/*")
-        id     = "#{CONFIG.batch_namespace}_#{Apertiiif::Utils.basename(f)}"
-        Apertiiif::Item.new(id, assets, {})
+        assets   = File.file?(f) ? [f] : Dir.glob("#{f}/*")
+        id       = Apertiiif::Utils.basename f
+        record   = @records.find { |r| r.id == id }
+        Apertiiif::Item.new id, assets, record
       end
+    end
+
+    # rubocop:disable Metrics/AbcSize
+    def audit_records
+      puts Rainbow('Auditing record and file pairings...').cyan
+      nil_records = @items.select { |i| i.record.nil? }
+      if nil_records.empty?
+        puts Rainbow('Done ✓').green
+      else
+        puts Rainbow("Could not find records for #{nil_records.length} items:").orange
+        nil_records.each { |n| puts Rainbow(n.id).yellow }
+      end
+    end
+    # rubocop:enable Metrics/AbcSize
+
+    def records
+      hashes = CSV.read(CONFIG.records_file, headers: true).map(&:to_hash)
+      hashes.map do |h|
+        h = CONFIG.records_defaults.merge h.compact
+        OpenStruct.new h
+      end
+    rescue StandardError
+      puts Rainbow("Could not load #{CONFIG.records_file}. Does it exist as a valid CSV?").magenta
+      []
     end
 
     def assets
@@ -76,7 +104,6 @@ module Apertiiif
       puts Rainbow('Creating HTML index of items...').cyan
       index_file = "#{CONFIG.html_build_dir}/index.html"
       File.open(index_file, 'w') { |f| f.write to_html }
-      puts '[ 1/1 ]'
       puts Rainbow('Done ✓').green
     end
 
@@ -85,32 +112,23 @@ module Apertiiif
       puts Rainbow('Creating JSON index of items...').cyan
       index_file = "#{CONFIG.html_build_dir}/index.json"
       File.open(index_file, 'w') { |f| f.write to_json }
-      puts '[ 1/1 ]'
       puts Rainbow('Done ✓').green
     end
 
     def to_html
       <<~HTML
-        <!DOCTYPE html>
-        <html lang="en">
+        <!DOCTYPE html><html lang="en">
           <head>
-            <meta charset="UTF-8">
+            <meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="ie=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <meta http-equiv="X-UA-Compatible" content="ie=edge">
             <title>apertiiif batch listing: #{CONFIG.batch_namespace}</title>
-            <style>
-              body {
-                font-family: Sans-Serif;
-              }
-            </style>
+            <style>body {font-family: Sans-Serif;}</style>
           </head>
           <body>
             <h1>#{CONFIG.batch_namespace} apertiiif batch</h1>
             <p>last updated #{Apertiiif::Utils.formatted_time}</p>
             <h2>published items (#{@items.length})</h2>
-            <ul>
-              #{@items.map(&:to_html_list_item).join("\n")}
-            </ul>
+            <ul>#{@items.map(&:to_html_list_item).join("\n")}</ul>
           </body>
         </html>
       HTML
