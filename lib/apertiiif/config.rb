@@ -50,7 +50,7 @@ module Apertiiif
     end
 
     def service_namespace
-      @hash.fetch 'service_namespace'
+      @hash.fetch 'service_namespace', 'apertiiif-batch'
     end
 
     def presentation_api_url
@@ -58,7 +58,21 @@ module Apertiiif
     end
 
     def batch_namespace
-      File.basename(FileUtils.pwd).sub(service_namespace, '')
+      working_dir = File.basename FileUtils.pwd
+      working_dir.sub! service_namespace, ''
+      Utils.prune_prefix_junk working_dir
+    end
+
+    def batch_label
+      @hash.fetch 'label', nil
+    end
+
+    def batch_description
+      @hash.fetch 'description', nil
+    end
+
+    def batch_attribution
+      @hash.fetch 'attribution', nil
     end
   end
 end

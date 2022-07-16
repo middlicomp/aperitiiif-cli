@@ -11,14 +11,18 @@ module Apertiiif
     CUSTOM_METADATA_PREFIX = 'meta.'
 
     def initialize(id, assets, record = nil)
-      @id       = [CONFIG.batch_namespace, id].join '_'
+      @id       = id
       @assets   = assets.map { |a| Apertiiif::Asset.new a }
       @record   = record
       @seed     = seed
     end
 
     def manifest_url
-      "#{CONFIG.presentation_api_url}/#{@id}/manifest.json"
+      "#{CONFIG.presentation_api_url}/#{CONFIG.batch_namespace}/#{@id}/manifest.json"
+    end
+
+    def manifest
+      @manifest ||= build_manifest
     end
 
     def viewpoint_url
@@ -76,12 +80,11 @@ module Apertiiif
     end
 
     def manifest_file
-      "#{CONFIG.presentation_build_dir}/#{@id}/manifest.json"
+      "#{CONFIG.presentation_build_dir}/#{CONFIG.batch_namespace}/#{@id}/manifest.json"
     end
 
     def write_presentation_json
       FileUtils.mkdir_p File.dirname(manifest_file)
-      manifest = build_manifest
       File.open(manifest_file, 'w') { |m| m.write manifest.to_json(pretty: true) }
     end
 
@@ -95,12 +98,13 @@ module Apertiiif
 
     def to_html_list_item
       <<~HTML
-        <li>
-          <b>#{@id}:</b>
-          <a target='_blank' href='#{manifest_url}'>iiif manifest</a>,
-          <a target='_blank' href='#{@assets.first.thumbnail_url}'>thumb</a>,
-          <a target='_blank' href='#{viewpoint_url}'>view in viewpoint</a>
-        </li>
+        <tr>
+          <td><b>#{@id}</b></td>
+          <td>#{label}</td>
+          <td><a target='_blank' href='#{@assets.first.thumbnail_url}'><img style="height:100px;width:auto" class='lazy' data-original="#{@assets.first.thumbnail_url}"/></a></td>
+          <td><a target='_blank' href='#{manifest_url}'><img alt='Thumbnail #{label}' src="https://upload.wikimedia.org/wikipedia/commons/e/e8/International_Image_Interoperability_Framework_logo.png" style="width:25px"/></a></td>
+          <td><a target='_blank' class='is-size-7' href='#{viewpoint_url}'>#{viewpoint_url}</a></td>
+        </tr>
       HTML
     end
   end

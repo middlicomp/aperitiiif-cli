@@ -2,6 +2,7 @@
 
 require 'csv'
 require 'fileutils'
+require 'iiif/presentation'
 require 'json'
 require 'parallel'
 require 'progress_bar'
@@ -69,6 +70,34 @@ module Apertiiif
       @items.map(&:to_hash)
     end
 
+    def seed
+      s = {}
+      s['@id']         = iiif_collection_url
+      s['label']       = CONFIG.batch_label unless CONFIG.batch_label.nil?
+      s['description'] = CONFIG.batch_description unless CONFIG.batch_description.nil?
+      s['attribution'] = CONFIG.batch_attribution unless CONFIG.batch_attribution.nil?
+      s
+    end
+
+    def iiif_collection
+      c = IIIF::Presentation::Collection.new seed
+      c.manifests = @items.map(&:manifest)
+      c
+    end
+
+    def iiif_collection_file
+      "#{CONFIG.presentation_build_dir}/#{CONFIG.batch_namespace}/collection.json"
+    end
+
+    def iiif_collection_url
+      "#{CONFIG.presentation_api_url}/#{CONFIG.batch_namespace}/collection.json"
+    end
+
+    def write_iiif_collection_json
+      FileUtils.mkdir_p File.dirname(iiif_collection_file)
+      File.open(iiif_collection_file, 'w') { |m| m.write iiif_collection.to_json(pretty: true) }
+    end
+
     def build_image_api
       FileUtils.mkdir_p CONFIG.image_build_dir
       bar = ProgressBar.new :rate
@@ -88,7 +117,7 @@ module Apertiiif
         i.write_presentation_json
         bar.increment!
       end
-      # TO DO !! build IIIF collection JSON
+      write_iiif_collection_json
       puts Rainbow("\nDone ✓").green
     end
   end
