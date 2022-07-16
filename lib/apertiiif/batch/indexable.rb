@@ -53,20 +53,22 @@ module Apertiiif
             </section>
             <section class="section">
               <div class="container">
-                <h2 class="is-size-4 mb-3">Items (#{@items.length})</h3>
-                <table id="table" class="table display is-hoverable is-striped is-bordered">
-                  <thead>
-                    <tr>
-                      <td>item id</td>
-                      <td>label</td>
-                      <td>thumbnnail</td>
-                      <td>iiif manifest</td>
-                      <td>view in viewpoint</td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    #{@items.map(&:to_html_list_item).join("\n")}
-                  </tbody>
+                <h2 class="is-size-4 mb-3">Items (#{@items.length})</h2>
+                <div class="table-container">
+                  <table id="table" class="table display is-hoverable is-striped is-bordered">
+                    <thead>
+                      <tr>
+                        <td>item id</td>
+                        <td>label</td>
+                        <td>thumbnnail</td>
+                        <td>iiif manifest</td>
+                        <td>view in viewpoint</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      #{@items.map(&:to_html_list_item).join("\n")}
+                    </tbody>
+                  </table>
                 </table>
               </div>
             </section>
