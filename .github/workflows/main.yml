@@ -17,5 +17,9 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - name: Run the default task
+      - name: RSpec
         run: bundle exec rake
+      - name: Rubocop
+        run: bundle exec rubocop
+      - name: Reek
+        run: bundle exec rake reek

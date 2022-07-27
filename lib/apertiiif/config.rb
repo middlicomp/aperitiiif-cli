@@ -1,28 +1,46 @@
 # frozen_string_literal: true
 
+require 'ostruct'
+
 # TO DO COMMENT
 module Apertiiif
   # TO DO COMMENT
   class Config
-    DEFAULT_CONFIG_FILE  = './config.yml'
-    DEFAULT_BUILD_DIR    = './build'
-    DEFAULT_SOURCE_DIR   = './src/data'
-    DEFAULT_RECORDS_FILE = './src/records.csv'
+    DEFAULT_VALUES = {
+      'build_dir' => './build',
+      'source_dir' => './src/data',
+      'service_namespace' => 'apertiiif-batch'
+    }.freeze
 
-    def initialize(config = nil)
-      @hash = config || SafeYAML.load_file(DEFAULT_CONFIG_FILE)
+    def initialize(seed = {})
+      @hash   = DEFAULT_VALUES.merge(seed)
+      @source = OpenStruct.new @hash
+
+      validate
     end
 
-    def build_dir
-      @hash.fetch 'build_dir', DEFAULT_BUILD_DIR
+    def method_missing(method, *args, &block)
+      @source.send(method, *args, &block)
     end
 
-    def public_dir
-      @hash.fetch 'public_dir', DEFAULT_PUBLIC_DIR
+    def respond_to_missing?(method_name)
+      @source.send(method) || super
     end
 
-    def source_dir
-      @hash.fetch 'source_dir', DEFAULT_SOURCE_DIR
+    # should check for more reqs
+    def validate
+      raise Apertiiif::Error, "Config is missing a valid 'namespace' for the batch." if batch_namespace.empty?
+      raise Apertiiif::Error, "Config is missing 'label' for the batch," if batch_label.empty?
+    end
+
+    def batch_namespace
+      pwd  = FileUtils.pwd
+      name = pwd.split(@source.service_namespace).last
+      Utils.prune_prefix_junk name
+    end
+
+    def batch_label
+      label
     end
 
     def presentation_build_dir
@@ -38,41 +56,11 @@ module Apertiiif
     end
 
     def records_file
-      @hash.dig 'records', 'file' || DEFAULT_RECORDS_FILE
+      @hash.dig('records', 'file') || ''
     end
 
     def records_defaults
-      @hash.dig 'records', 'defaults' || {}
-    end
-
-    def image_api_url
-      @hash.fetch 'image_api_url'
-    end
-
-    def service_namespace
-      @hash.fetch 'service_namespace', 'apertiiif-batch'
-    end
-
-    def presentation_api_url
-      @hash.fetch 'presentation_api_url'
-    end
-
-    def batch_namespace
-      working_dir = File.basename FileUtils.pwd
-      working_dir.sub! service_namespace, ''
-      Utils.prune_prefix_junk working_dir
-    end
-
-    def batch_label
-      @hash.fetch 'label', nil
-    end
-
-    def batch_description
-      @hash.fetch 'description', nil
-    end
-
-    def batch_attribution
-      @hash.fetch 'attribution', nil
+      @hash.dig('records', 'defaults') || {}
     end
   end
 end

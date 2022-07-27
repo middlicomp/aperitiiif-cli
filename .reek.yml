@@ -1,0 +1,10 @@
+---
+detectors:
+  TooManyStatements:
+    max_statements: 6
+  DuplicateMethodCall:
+    allow_calls:
+      - options
+      - match
+  UtilityFunction:
+    enabled: false

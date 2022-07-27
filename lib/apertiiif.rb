@@ -1,50 +1,25 @@
 # frozen_string_literal: true
 
+require 'rainbow'
 require 'thor'
 
-require_relative 'apertiiif/config'
-require_relative 'apertiiif/batch'
-
-require_relative 'apertiiif/asset'
-require_relative 'apertiiif/item'
-require_relative 'apertiiif/version'
-require_relative 'apertiiif/utils'
+require 'apertiiif/asset'
+require 'apertiiif/batch'
+require 'apertiiif/cli'
+require 'apertiiif/config'
+require 'apertiiif/item'
+require 'apertiiif/record'
+require 'apertiiif/version'
+require 'apertiiif/utils'
 
 # TO DO COMMENT
 module Apertiiif
-  # TO DO COMMENT
-  class Error < StandardError; end
+  ALLOWED_SRC_FORMATS = %w[jpg jpeg png tif tiff].freeze
 
   # TO DO COMMENT
-  class CLI < Thor
-    map %w[--version -v] => :__print_version
-    desc '--version, -v', 'print the version'
-    def __print_version
-      puts Apertiiif::VERSION
-    end
-
-    desc 'build', 'build the batch'
-    option :reset
-    option :lint
-    def build
-      batch = Apertiiif::Batch.new
-      batch.reset if options[:reset]
-      batch.lint  if options[:lint]
-
-      batch.build_image_api
-      batch.build_presentation_api
-      batch.build_html_index
-      batch.build_json_index
-    end
-
-    desc 'reset', 'reset the batch'
-    def reset
-      Apertiiif::Batch.new.reset
-    end
-
-    desc 'lint', 'lint the batch'
-    def lint
-      Apertiiif::Batch.new.lint
+  class Error < StandardError
+    def initialize(msg = '')
+      super("#{self} => #{Rainbow(msg).magenta}")
     end
   end
 end

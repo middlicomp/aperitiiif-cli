@@ -5,4 +5,4 @@ ENV['VIPS_WARNING'] = '1'
 
 require 'apertiiif'
 
-Apertiiif::CLI.start
+Apertiiif::CLI::Main.start

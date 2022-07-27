@@ -32,4 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'ruby-vips'
   spec.add_dependency 'safe_yaml'
   spec.add_dependency 'thor'
+
+  spec.add_development_dependency 'reek'
+  spec.add_development_dependency 'rspec'
 end

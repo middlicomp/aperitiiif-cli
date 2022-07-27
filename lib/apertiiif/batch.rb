@@ -1,124 +1,100 @@
 # frozen_string_literal: true
 
-require 'csv'
 require 'fileutils'
-require 'iiif/presentation'
-require 'json'
 require 'parallel'
 require 'progress_bar'
-require 'rainbow'
 require 'safe_yaml'
 
-require_relative 'batch/indexable'
-require_relative 'batch/lintable'
+require 'apertiiif/batch/assets'
+require 'apertiiif/batch/items'
+require 'apertiiif/batch/records'
+require 'apertiiif/batch/index'
+require 'apertiiif/batch/linters'
 
 # TO DO COMMENT
 module Apertiiif
-  CONFIG  = Apertiiif::Config.new
-  FORMATS = %w[jpg jpeg png tif tiff].freeze
-
   # TO DO COMMENT
   class Batch
-    include Indexable
-    include Lintable
+    include Assets
+    include Index
+    include Items
+    include Linters
+    include Records
 
-    def initialize
-      @records = records
-      @items = items
+    def initialize; end
+
+    DEFAULT_CONFIG_FILE = './config.yml'
+
+    def config
+      @config ||= load_config_file
     end
 
-    def reset
+    def load_config_file(file = DEFAULT_CONFIG_FILE)
+      @config = Config.new SafeYAML.load_file file
+    rescue StandardError
+      raise Apertiiif::Error, "Cannot find file #{file}" unless File.file?(file)
+
+      raise Apertiiif::Error, "Cannot read file #{file}. Is it valid yaml?"
+    end
+
+    def load_config_hash(hash)
+      @config = Config.new hash
+    end
+
+    def reset(dir = config.build_dir)
       puts Rainbow('Resetting build...').cyan
-      FileUtils.rm_rf CONFIG.build_dir
+      FileUtils.rm_rf dir
       puts Rainbow('Done ✓').green
     end
 
-    def collect_assets_paths(path)
-      return [path] if File.file?(path) && path.end_with?(*FORMATS)
-      return [] unless File.directory? path
-
-      Dir.glob("#{path}/*").select { |p| p.end_with?(*FORMATS) }
-    end
-
-    def items
-      Dir.glob("#{CONFIG.source_dir}/*").map do |p|
-        asset_paths = collect_assets_paths p
-        next if asset_paths.empty?
-
-        id          = Apertiiif::Utils.basename p
-        record      = @records.find { |r| r.id == id }
-        Apertiiif::Item.new id, asset_paths, record
-      end.compact
-    end
-
-    def records
-      hashes = CSV.read(CONFIG.records_file, headers: true).map(&:to_hash)
-      hashes.map do |h|
-        h = CONFIG.records_defaults.merge h.compact
-        OpenStruct.new h
+    def write_target_assets(assets = self.assets)
+      bar = ProgressBar.new :rate
+      puts Rainbow('Writing target image TIFs...').cyan
+      Parallel.each assets do |asset|
+        asset.write_to_target
+        bar.increment!
       end
-    rescue StandardError
-      puts Rainbow("Could not load #{CONFIG.records_file}. Does it exist as a valid CSV?").magenta
-      []
+      puts Rainbow("\nDone ✓").green
     end
 
-    def assets
-      @assets ||= @items.flat_map(&:assets)
-    end
-
-    def hashes
-      @items.map(&:to_hash)
+    # has smell :reek:TooManyStatements
+    def write_presentation_json(items = self.items)
+      bar = ProgressBar.new :rate
+      puts Rainbow('Creating IIIF Presentation JSON...').cyan
+      load_records!
+      Parallel.each items do |item|
+        item.write_presentation_json && bar.increment!
+      end
+      write_iiif_collection_json
+      puts Rainbow("\nDone ✓").green
     end
 
     def seed
-      s = {}
-      s['@id']         = iiif_collection_url
-      s['label']       = CONFIG.batch_label unless CONFIG.batch_label.nil?
-      s['description'] = CONFIG.batch_description unless CONFIG.batch_description.nil?
-      s['attribution'] = CONFIG.batch_attribution unless CONFIG.batch_attribution.nil?
-      s
+      {
+        '@id' => iiif_collection_url,
+        'label' => config.batch_label,
+        'description' => config.batch_description,
+        'attribution' => config.batch_attribution
+      }.delete_if { |_key, val| val.blank? }
     end
 
     def iiif_collection
-      c = IIIF::Presentation::Collection.new seed
-      c.manifests = @items.map(&:manifest)
-      c
+      collection = IIIF::Presentation::Collection.new seed
+      collection.manifests = items.map(&:manifest)
+      collection
     end
 
     def iiif_collection_file
-      "#{CONFIG.presentation_build_dir}/#{CONFIG.batch_namespace}/collection.json"
+      "#{config.presentation_build_dir}/#{config.batch_namespace}/collection.json"
     end
 
     def iiif_collection_url
-      "#{CONFIG.presentation_api_url}/#{CONFIG.batch_namespace}/collection.json"
+      "#{config.presentation_api_url}/#{config.batch_namespace}/collection.json"
     end
 
     def write_iiif_collection_json
       FileUtils.mkdir_p File.dirname(iiif_collection_file)
-      File.open(iiif_collection_file, 'w') { |m| m.write iiif_collection.to_json(pretty: true) }
-    end
-
-    def build_image_api
-      FileUtils.mkdir_p CONFIG.image_build_dir
-      bar = ProgressBar.new :rate
-      puts Rainbow('Writing target TIFs...').cyan
-      Parallel.each assets do |a|
-        a.write_to_target
-        bar.increment!
-      end
-      puts Rainbow("\nDone ✓").green
-    end
-
-    def build_presentation_api
-      FileUtils.mkdir_p CONFIG.presentation_build_dir
-      bar = ProgressBar.new :rate
-      puts Rainbow('Creating IIIF Presentation JSON...').cyan
-      Parallel.each @items do |i|
-        i.write_presentation_json
-        bar.increment!
-      end
-      write_iiif_collection_json
-      puts Rainbow("\nDone ✓").green
+      File.open(iiif_collection_file, 'w') { |file| file.write iiif_collection.to_json(pretty: true) }
     end
   end
 end
