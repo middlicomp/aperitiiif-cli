@@ -16,3 +16,8 @@ Layout/LineLength:
 
 Naming/RescuedExceptionsVariableName:
   Enabled: false # conflicts with reek expectations
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/*'
+    - '*.gemspec'

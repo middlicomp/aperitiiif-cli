@@ -23,19 +23,10 @@ module Apertiiif
     end
 
     def self.prune_prefix_junk(str)
-      str.sub(/^(_|\W)/, '')
+      str.sub(/^(_|\W+)/, '')
     end
 
-    # def self.rm_batch_namespace(str)
-    #   prune_prefix_junk(str.sub(CONFIG.batch_namespace, ''))
-    # end
-    #
-    # def self.rm_service_namespace(str)
-    #   prune_prefix_junk(str.sub(CONFIG.service_namespace, ''))
-    # end
-
-    def self.formatted_datetime
-      time      = Time.now
+    def self.formatted_datetime(time = Time.now)
       fmt_date  = "#{time.month}/#{time.day}/#{time.year}"
       fmt_time  = "#{time.hour}:#{time.min.to_s.rjust(2, '0')}#{time.zone}"
       "#{fmt_date} at #{fmt_time}"
