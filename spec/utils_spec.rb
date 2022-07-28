@@ -12,8 +12,9 @@ RSpec.describe Apertiiif::Utils do
 
   describe '.formatted_datetime' do
     it 'returns formatted datestring' do
-      @str = Apertiiif::Utils.formatted_datetime(Time.new(1991, 10, 14))
-      expect(@str).to eq('10/14/1991 at 0:00EDT')
+      @time = Time.utc(1991, 10, 4)
+      @str  = Apertiiif::Utils.formatted_datetime(@time)
+      expect(@str).to eq('10/4/1991 at 0:00UTC')
     end
   end
 
