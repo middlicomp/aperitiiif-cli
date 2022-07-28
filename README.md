@@ -15,6 +15,10 @@ Install the gem and add to the application's Gemfile by executing:
 bundle add apertiiif
 ```
 
+## Overview
+
+[![service diagram](./docs/apertiiif.jpg)](./docs/apertiiif.jpg)
+
 ## Usage
 
 TODO: Write usage instructions here
