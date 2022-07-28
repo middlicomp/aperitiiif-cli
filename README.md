@@ -18,6 +18,7 @@ bundle add apertiiif
 ## Overview
 
 [![service diagram](./docs/apertiiif.jpg)](./docs/apertiiif.jpg)
+> View as [PDF](./docs/apertiiif.pdf).
 
 ## Usage
 
