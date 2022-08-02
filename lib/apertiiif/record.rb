@@ -6,24 +6,28 @@ require 'ostruct'
 module Apertiiif
   # to do
   class Record
-    CUSTOM_METADATA_PREFIX = 'meta.'
+    DELEGATE                = %i[puts p].freeze
+    CUSTOM_METADATA_PREFIX  = 'meta.'
 
-    def initialize(hash, defaults)
+    def initialize(hash, defaults = {})
       @hash = defaults.merge(hash)
-
-      validate
+      @id   = id
     end
 
-    def method_missing(method)
-      @hash.fetch method, ''
+    def method_missing(method, *args, &block)
+      return super if DELEGATE.include? method
+
+      @hash.fetch method.to_s
     end
 
     def respond_to_missing?(method, _args)
-      @hash.send(method) || super
+      DELEGATE.include?(method) or super
     end
 
     def id
       @hash.fetch 'id'
+    rescue KeyError
+      raise Apertiiif::Error, "Record has no 'id'\n#{@hash.inspect}"
     end
 
     def label
@@ -53,11 +57,6 @@ module Apertiiif
           'value' => @hash[key]
         }
       end
-    end
-
-    # should check for more reqs
-    def validate
-      raise Apertiiif::Error, "Record has no 'id'\n#{@hash.inspect}" unless id.present?
     end
   end
 end

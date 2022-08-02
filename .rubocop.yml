@@ -19,5 +19,4 @@ Naming/RescuedExceptionsVariableName:
 
 Metrics/BlockLength:
   Exclude:
-    - 'spec/*'
-    - '*.gemspec'
+    - 'spec/**/*'

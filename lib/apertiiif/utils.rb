@@ -51,11 +51,9 @@ module Apertiiif
       Dir.glob("#{path}/*").select { |sub| Utils.valid_source? sub }
     end
 
-    def self.csv_records(file, defaults)
+    def self.csv_records(file, defaults = {})
       hashes = CSV.read(file, headers: true).map(&:to_hash)
-      hashes.map { |hash| Record.new hash, defaults }
-    rescue StandardError
-      raise Apertiiif::Error, "Found file #{file} but could not read it. Is it a valid CSV?"
+      hashes.map { |hash| Record.new hash.compact, defaults }
     end
   end
 end
