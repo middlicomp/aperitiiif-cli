@@ -8,7 +8,8 @@ gem-packaged commands for processing apertiiif batches 🥂
 
 ## Overview
 
-[![service diagram](./docs/apertiiif.jpg)](./docs/apertiiif.jpg)
+<img alt="apertiiif service diagram" src="./docs/apertiiif.jpg" height="300"/>
+
 > View as [PDF](./docs/apertiiif.pdf).
 
 
@@ -23,7 +24,7 @@ gem-packaged commands for processing apertiiif batches 🥂
 
 It is highly recommended that you use the [apertiiif-batch-template](https://github.com/nyu-dss/apertiiif-batch-template) repo to create your new batch project. This method will include all the necessary Ruby dependencies and project structure.
 
-#### Manual
+### Manual
 
 Alternatively, you can add the gem to your project's Gemfile:
 
