@@ -60,31 +60,31 @@ RSpec.describe Apertiiif::Asset do
 
   describe '.canvas_url' do
     it 'returns valid url' do
-      expect(@asset.canvas_url).to eq('https://example.com/presentation/canvas/templateapertiiif-cli_test_valid.json')
+      expect(@asset.canvas_url).to start_with('https://example.com/presentation/')
     end
   end
 
   describe '.thumbnail_url' do
     it 'returns expected url' do
-      expect(@asset.thumbnail_url).to eq('https://example.com/presentation/templateapertiiif-cli_test_valid/full/250,/0/default.jpg')
+      expect(@asset.thumbnail_url).to start_with('https://example.com/presentation/')
     end
   end
 
   describe '.annotation_url' do
     it 'returns expected url' do
-      expect(@asset.annotation_url).to eq('https://example.com/presentation/annotation/templateapertiiif-cli_test_valid.json')
+      expect(@asset.annotation_url).to start_with('https://example.com/presentation/')
     end
   end
 
   describe '.full_resource_url' do
     it 'returns expected url' do
-      expect(@asset.full_resource_url).to eq('https://example.com/presentation/templateapertiiif-cli_test_valid/full/full/0/default.jpg')
+      expect(@asset.full_resource_url).to start_with('https://example.com/presentation/')
     end
   end
 
   describe '.service_url' do
     it 'returns expected url' do
-      expect(@asset.service_url).to eq('https://example.com/presentation/templateapertiiif-cli_test_valid')
+      expect(@asset.service_url).to start_with('https://example.com/presentation/')
     end
   end
 
