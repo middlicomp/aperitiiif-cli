@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'ostruct'
-
 # TO DO COMMENT
 module Apertiiif
+  # has smell :reek:Attribute
   # TO DO COMMENT
   class Config
+    DELEGATE       = %i[puts p].freeze
     DEFAULT_VALUES = {
       'build_dir' => './build',
       'source_dir' => './src/data',
@@ -13,54 +13,40 @@ module Apertiiif
     }.freeze
 
     def initialize(seed = {})
-      @hash   = DEFAULT_VALUES.merge(seed)
-      @source = OpenStruct.new @hash
-
+      @hash = DEFAULT_VALUES.merge(seed)
       validate
     end
 
     def method_missing(method, *args, &block)
-      @source.send(method, *args, &block)
+      return super if DELEGATE.include? method
+
+      @hash.fetch method.to_s, ''
     end
 
-    def respond_to_missing?(method_name)
-      @source.send(method) || super
+    def respond_to_missing?(method, _args)
+      DELEGATE.include?(method) or super
     end
 
     # should check for more reqs
     def validate
-      raise Apertiiif::Error, "Config is missing a valid 'namespace' for the batch." if batch_namespace.empty?
-      raise Apertiiif::Error, "Config is missing 'label' for the batch," if batch_label.empty?
+      raise Apertiiif::Error, "Config is missing a valid 'namespace' for the batch." if namespace.empty?
+      raise Apertiiif::Error, "Config is missing 'label' for the batch." if label.empty?
     end
 
-    def batch_namespace
-      pwd  = FileUtils.pwd
-      name = pwd.split(@source.service_namespace).last
-      Utils.prune_prefix_junk name
+    def namespace
+      @namespace ||= batch_namespace
     end
 
-    def batch_label
-      label
+    def batch_namespace(dir = nil)
+      dir ||= FileUtils.pwd
+      name = dir.split(service_namespace).last
+      Utils.slugify name
     end
 
-    def presentation_build_dir
-      "#{build_dir}/presentation"
-    end
-
-    def image_build_dir
-      "#{build_dir}/image"
-    end
-
-    def html_build_dir
-      "#{build_dir}/html"
-    end
-
-    def records_file
-      @hash.dig('records', 'file') || ''
-    end
-
-    def records_defaults
-      @hash.dig('records', 'defaults') || {}
-    end
+    def presentation_build_dir  = "#{build_dir}/presentation"
+    def image_build_dir         = "#{build_dir}/image"
+    def html_build_dir          = "#{build_dir}/html"
+    def records_file            = @hash.dig('records', 'file') || ''
+    def records_defaults        = @hash.dig('records', 'defaults') || {}
   end
 end

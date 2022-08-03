@@ -30,21 +30,10 @@ module Apertiiif
       raise Apertiiif::Error, "Record has no 'id'\n#{@hash.inspect}"
     end
 
-    def label
-      @hash.fetch 'label', id
-    end
-
-    def logo
-      @hash.fetch 'logo', ''
-    end
-
-    def description
-      @hash.fetch 'description', ''
-    end
-
-    def source
-      @hash.fetch 'source', ''
-    end
+    def label       = @hash.fetch 'label', id
+    def logo        = @hash.fetch 'logo', ''
+    def description = @hash.fetch 'description', ''
+    def source      = @hash.fetch 'source', ''
 
     def custom_metadata_keys
       @hash.to_h.keys.select { |key| key.to_s.start_with?(CUSTOM_METADATA_PREFIX) } || []

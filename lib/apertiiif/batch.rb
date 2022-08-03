@@ -72,7 +72,7 @@ module Apertiiif
     def seed
       {
         '@id' => iiif_collection_url,
-        'label' => config.batch_label,
+        'label' => config.label,
         'description' => config.batch_description,
         'attribution' => config.batch_attribution
       }.delete_if { |_key, val| val.blank? }
@@ -84,13 +84,8 @@ module Apertiiif
       collection
     end
 
-    def iiif_collection_file
-      "#{config.presentation_build_dir}/#{config.batch_namespace}/collection.json"
-    end
-
-    def iiif_collection_url
-      "#{config.presentation_api_url}/#{config.batch_namespace}/collection.json"
-    end
+    def iiif_collection_file  = "#{config.presentation_build_dir}/#{config.namespace}/collection.json"
+    def iiif_collection_url   = "#{config.presentation_api_url}/#{config.namespace}/collection.json"
 
     def write_iiif_collection_json
       FileUtils.mkdir_p File.dirname(iiif_collection_file)

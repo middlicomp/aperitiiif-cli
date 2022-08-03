@@ -42,7 +42,7 @@ module Apertiiif
             <meta charset='UTF-8'>
             <meta http-equiv='X-UA-Compatible' content='ie=edge'>
             <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-            <title>#{config.batch_label} | apertiiif batch listing</title>
+            <title>#{config.label} | apertiiif batch listing</title>
             <link rel='stylesheet' href='#{BULMA_CSS_URL}'>
             <link rel='stylesheet' href='#{DATATABLES_CSS_URL}'>
           </head>
@@ -50,7 +50,7 @@ module Apertiiif
             <section class='hero is-info'>
               <div class='hero-body'>
                 <div class='container'>
-                  <h1 class='title'>#{config.batch_label}</h1>
+                  <h1 class='title'>#{config.label}</h1>
                   <p class='subtitle'>
                     Apertiiif Batch Index
                   </p>

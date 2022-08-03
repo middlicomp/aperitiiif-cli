@@ -9,6 +9,9 @@ SimpleCov.start do
   add_filter '/spec/'
 end
 
+ENV['VIPS_WARNING'] = '1'
+FileUtils.rm_rf './build'
+
 require 'apertiiif'
 
 RSpec.configure do |config|

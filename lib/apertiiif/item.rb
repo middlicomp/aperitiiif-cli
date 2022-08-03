@@ -39,7 +39,7 @@ module Apertiiif
     end
 
     def manifest_url
-      "#{@config.presentation_api_url}/#{@config.batch_namespace}/#{@id}/manifest.json"
+      "#{@config.presentation_api_url}/#{@config.namespace}/#{@id}/manifest.json"
     end
 
     def thumbnail_url
@@ -71,7 +71,7 @@ module Apertiiif
     end
 
     def manifest_file
-      "#{@config.presentation_build_dir}/#{@config.batch_namespace}/#{id}/manifest.json"
+      "#{@config.presentation_build_dir}/#{@config.namespace}/#{id}/manifest.json"
     end
 
     def write_presentation_json
