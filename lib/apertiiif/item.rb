@@ -20,6 +20,14 @@ module Apertiiif
       @id       = id
       @config   = config
       @assets   = assets
+
+      validate_config
+    end
+
+    def validate_config
+      raise Apertiiif::Error, "No value found for 'namespace'. Check your config?" if @config.namespace.empty?
+      raise Apertiiif::Error, "No value found for 'presentation_api_url'. Check your config?" if @config.presentation_api_url.empty?
+      raise Apertiiif::Error, "No value found for 'presentation_build_dir'. Check your config?" if @config.presentation_build_dir.empty?
     end
 
     def record
@@ -43,6 +51,8 @@ module Apertiiif
     end
 
     def thumbnail_url
+      return '' if assets.empty?
+
       assets.first.thumbnail_url
     end
 
@@ -83,7 +93,7 @@ module Apertiiif
       {
         'id' => id,
         'manifest' => manifest_url,
-        'thumbnail' => assets.first.thumbnail_url
+        'thumbnail' => thumbnail_url
       }
     end
 

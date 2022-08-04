@@ -5,6 +5,8 @@ module Apertiiif
   # has smell :reek:Attribute
   # TO DO COMMENT
   class Config
+    attr_reader :namespace
+
     DELEGATE       = %i[puts p].freeze
     DEFAULT_VALUES = {
       'build_dir' => './build',
@@ -13,7 +15,9 @@ module Apertiiif
     }.freeze
 
     def initialize(seed = {})
-      @hash = DEFAULT_VALUES.merge(seed)
+      @hash       = DEFAULT_VALUES.merge(seed)
+      @namespace  = batch_namespace
+
       validate
     end
 
@@ -31,10 +35,6 @@ module Apertiiif
     def validate
       raise Apertiiif::Error, "Config is missing a valid 'namespace' for the batch." if namespace.empty?
       raise Apertiiif::Error, "Config is missing 'label' for the batch." if label.empty?
-    end
-
-    def namespace
-      @namespace ||= batch_namespace
     end
 
     def batch_namespace(dir = nil)
