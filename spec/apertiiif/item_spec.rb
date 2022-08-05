@@ -8,13 +8,11 @@ RSpec.describe Apertiiif::Item do
       'label' => 'my batch label',
       'presentation_api_url' => 'https://example.com/presentation'
     }
-    @conf_opts_defaults = @conf_opts.merge({
-                                             'records' => {
-                                               'defaults' => {
-                                                 'test_default' => 'here!'
-                                               }
-                                             }
-                                           })
+    @defaults = {
+      'records' => {
+        'defaults' => { 'test_default' => 'here!' }
+      }
+    }
     @id         = 'test'
     @source     = 'spec/fixtures/valid.jpeg'
     @conf_opts  = {
@@ -57,7 +55,7 @@ RSpec.describe Apertiiif::Item do
     end
     context 'when config defaults have been set' do
       it 'returns record with id key and defaults added' do
-        @config = Apertiiif::Config.new(@conf_opts_defaults)
+        @config = Apertiiif::Config.new(@conf_opts.merge(@defaults))
         @item = Apertiiif::Item.new(@id, @assets, @config)
         expect(@item.record.test_default).to eq('here!')
       end
@@ -116,6 +114,11 @@ RSpec.describe Apertiiif::Item do
   end
 
   describe '.write_presentation_json' do
+    it 'writes a manifest json file' do
+      FileUtils.rm(@item.manifest_file) if File.file?(@item.manifest_file)
+      @item.write_presentation_json
+      expect(File.file?(@item.manifest_file)).to be(true)
+    end
   end
 
   describe '.to_hash' do
