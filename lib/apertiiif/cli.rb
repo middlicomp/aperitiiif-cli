@@ -36,8 +36,9 @@ module Apertiiif
 
         batch.write_target_assets
         batch.write_presentation_json
-        batch.write_html_index
-        batch.write_json_index
+        index = Apertiiif::Index.new batch
+        index.write type: :html
+        index.write type: :json
       end
       # rubocop:enable Metrics/AbcSize
 

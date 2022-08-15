@@ -29,7 +29,9 @@ RSpec.describe Apertiiif::Item do
     context 'when not given requisite configuration'
     it 'raises custom errors' do
       @config = Apertiiif::Config.new({ 'label' => 'my batch label' })
-      expect { Apertiiif::Item.new(@id, @assets, @config) }.to raise_error(Apertiiif::Error)
+      expect do
+        quiet_stdout { Apertiiif::Item.new(@id, @assets, @config) }
+      end.to raise_error(Apertiiif::Error)
     end
 
     context 'when given requisite configuration'
@@ -50,7 +52,9 @@ RSpec.describe Apertiiif::Item do
     context 'when config defaults have not been set' do
       it 'returns record with id key only' do
         expect(@item.record.id).to eq('test')
-        expect { @item.record.test_default }.to raise_error(KeyError)
+        expect do
+          quiet_stdout { @item.record.test_default }
+        end.to raise_error(KeyError)
       end
     end
     context 'when config defaults have been set' do

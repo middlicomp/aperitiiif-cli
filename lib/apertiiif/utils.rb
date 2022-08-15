@@ -39,5 +39,10 @@ module Apertiiif
       hashes = CSV.read(file, headers: true).map(&:to_hash)
       hashes.map { |hash| Record.new hash.compact, defaults }
     end
+
+    def self.mkfile_p(path, contents)
+      FileUtils.mkdir_p File.dirname(path)
+      File.open(path, 'w') { |file| file.write contents }
+    end
   end
 end

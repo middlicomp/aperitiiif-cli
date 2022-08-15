@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rainbow'
+require 'colorize'
 require 'thor'
 
 require 'apertiiif/asset'
@@ -8,6 +8,7 @@ require 'apertiiif/batch'
 require 'apertiiif/cli'
 require 'apertiiif/config'
 require 'apertiiif/error'
+require 'apertiiif/index'
 require 'apertiiif/item'
 require 'apertiiif/record'
 require 'apertiiif/version'

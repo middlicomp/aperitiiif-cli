@@ -5,32 +5,46 @@ require 'json'
 # TO DO COMMENT
 module Apertiiif
   # TO DO COMMENT
-  module Index
+  # has smell :reek:TooManyConstants
+  class Index
     BULMA_CSS_URL       = 'https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css'
     DATATABLES_CSS_URL  = 'https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css'
     JQUERY_JS_URL       = 'https://code.jquery.com/jquery-3.5.1.js'
     LAZYLOAD_JS_URL     = 'https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js'
     DATATABLES_JS_URL   = 'https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js'
+    VALID_TYPES         = %i[json html].freeze
+
+    attr_reader :config, :items
+
+    def initialize(batch)
+      @batch  = batch
+      @config = batch.config
+      @items  = batch.items
+    end
+
+    def path(type)
+      "#{@config.html_build_dir}/index.#{type}"
+    end
+
+    # rubocop: disable Metrics/AbcSize
+    # has smell :reek:TooManyStatements
+    def write(**options)
+      raise Apertiiif::Error, "Index#write is missing required 'type:' option" unless options.key? :type
+      raise Apertiiif::Error, "Index#write 'type: #{options[:type]}' does not match available types #{VALID_TYPES}" unless VALID_TYPES.include? options[:type]
+
+      print "Writing #{options[:type]} index...".colorize(:cyan)
+
+      index = options[:type] == :html ? to_html : to_json
+      path  = options&.[](:path) || path(options[:type])
+
+      Apertiiif::Utils.mkfile_p path, index
+
+      puts "\r#{"Writing #{options[:type]} index:".colorize(:cyan)} #{'Done ✓'.colorize(:green)}    "
+    end
+    # rubocop: enable Metrics/AbcSize
 
     def to_json(items = self.items)
       JSON.pretty_generate items.map(&:to_hash)
-    end
-
-    def write_html_index(_items = items)
-      index_file = "#{@config.html_build_dir}/index.html"
-      FileUtils.mkdir_p File.dirname(index_file)
-      print Rainbow('Writing HTML index of items...').cyan
-      File.open(index_file, 'w') { |file| file.write to_html }
-      print("\r#{Rainbow('Writing HTML index:').cyan} #{Rainbow('Done ✓').green}        \n")
-    end
-
-    def write_json_index(items = self.items)
-      index_file = "#{@config.html_build_dir}/index.json"
-      FileUtils.mkdir_p File.dirname(index_file)
-      print Rainbow('Creating JSON index of items...').cyan
-
-      File.open(index_file, 'w') { |file| file.write to_json(items) }
-      print("\r#{Rainbow('Writing JSON index:').cyan} #{Rainbow('Done ✓').green}        \n")
     end
 
     # has smell :reek:DuplicateMethodCall
@@ -55,7 +69,7 @@ module Apertiiif
                   </p>
                   <p class='is-5 is-grey'>Last updated #{Apertiiif::Utils.formatted_datetime}</p>
                   <p class='tags mt-5'>
-                    <a target='_blank' class='tag is-danger is-light' href='#{iiif_collection_url}'>iiif collection</a>
+                    <a target='_blank' class='tag is-danger is-light' href='#{@batch.iiif_collection_url}'>iiif collection</a>
                     <a target='_blank' class='tag is-link is-light' href='index.json'>index.json</a>
                   </p>
                 </div>

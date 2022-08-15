@@ -8,7 +8,6 @@ require 'safe_yaml'
 require 'apertiiif/batch/assets'
 require 'apertiiif/batch/items'
 require 'apertiiif/batch/records'
-require 'apertiiif/batch/index'
 require 'apertiiif/batch/linters'
 
 # TO DO COMMENT
@@ -16,7 +15,6 @@ module Apertiiif
   # TO DO COMMENT
   class Batch
     include Assets
-    include Index
     include Items
     include Linters
     include Records
@@ -42,19 +40,19 @@ module Apertiiif
     end
 
     def reset(dir = config.build_dir)
-      print Rainbow('Resetting build...').cyan
+      print 'Resetting build...'.colorize(:cyan)
       FileUtils.rm_rf dir
-      print("\r#{Rainbow('Resetting build:').cyan} #{Rainbow('Done ✓').green}")
+      print("\r#{'Resetting build:'.colorize(:cyan)} #{'Done ✓'.colorize(:green)}")
     end
 
     def write_target_assets(assets = self.assets)
-      msg = Rainbow('Writing target image TIFs').cyan
+      msg = 'Writing target image TIFs'.colorize(:cyan)
       Parallel.map(assets, in_threads: 4, progress: { format: "#{msg}: %c/%u | %P%" }, &:write_to_target)
     end
 
     # has smell :reek:TooManyStatements
     def write_presentation_json(items = self.items)
-      msg = Rainbow('Writing IIIF Presentation JSON').cyan
+      msg = 'Writing IIIF Presentation JSON'.colorize(:cyan)
       load_records!
       Parallel.map(items, in_threads: 4, progress: { format: "#{msg}: %c/%u | %P%" }, &:write_presentation_json)
       write_iiif_collection_json
@@ -80,8 +78,7 @@ module Apertiiif
     def iiif_collection_written?  = File.file? iiif_collection_file
 
     def write_iiif_collection_json
-      FileUtils.mkdir_p File.dirname(iiif_collection_file)
-      File.open(iiif_collection_file, 'w') { |file| file.write iiif_collection.to_json(pretty: true) }
+      Apertiiif::Utils.mkfile_p iiif_collection_file, iiif_collection.to_json(pretty: true)
     end
   end
 end

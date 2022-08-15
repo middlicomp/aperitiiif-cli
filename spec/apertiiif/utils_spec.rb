@@ -115,7 +115,9 @@ RSpec.describe Apertiiif::Utils do
     context 'when given an invalid csv file' do
       it 'raises a custom error' do
         @path = 'spec/fixtures/src/invalid.csv'
-        expect { Apertiiif::Utils.csv_records(@path) }.to raise_error(Apertiiif::Error)
+        expect do
+          quiet_stdout { Apertiiif::Utils.csv_records(@path) }
+        end.to raise_error(Apertiiif::Error)
       end
     end
   end

@@ -24,12 +24,16 @@ RSpec.describe Apertiiif::Batch do
     context 'when given a file path' do
       context 'that does not exist' do
         it 'raises custom error' do
-          expect { @batch.load_config_file('does-not-exist.yml') }.to raise_error(Apertiiif::Error)
+          expect do
+            quiet_stdout { @batch.load_config_file('does-not-exist.yml') }
+          end.to raise_error(Apertiiif::Error)
         end
       end
       context 'that exists but is invalid yaml' do
         it 'raises custom error' do
-          expect { @batch.load_config_file('spec/fixtures/bad-config.yml') }.to raise_error(Apertiiif::Error)
+          expect do
+            quiet_stdout { @batch.load_config_file('spec/fixtures/bad-config.yml') }
+          end.to raise_error(Apertiiif::Error)
         end
       end
       context 'that exists and is valid' do

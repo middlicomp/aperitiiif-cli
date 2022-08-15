@@ -15,7 +15,9 @@ RSpec.describe Apertiiif::Config do
     end
     context 'when not given the minimum metadata (label)' do
       it 'creates a config object' do
-        expect { Apertiiif::Config.new }.to raise_error(Apertiiif::Error)
+        expect do
+          quiet_stdout { Apertiiif::Config.new }
+        end.to raise_error(Apertiiif::Error)
       end
     end
   end

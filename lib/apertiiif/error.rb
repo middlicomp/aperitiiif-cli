@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
+require 'colorize'
+
 # TO DO COMMENT
 module Apertiiif
   # TO DO COMMENT
-  class Error < StandardError
+  class Error < RuntimeError
     def initialize(msg = '')
-      super("#{self} => #{Rainbow(msg).magenta}")
+      puts msg.colorize(:magenta) and super('')
     end
   end
 end

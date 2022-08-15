@@ -19,7 +19,9 @@ RSpec.describe Apertiiif::Asset do
     context 'when not given requisite configuration'
     it 'raises custom errors' do
       @config = Apertiiif::Config.new({ 'label' => 'my batch label' })
-      expect { Apertiiif::Asset.new(@parent_id, @source, @config) }.to raise_error(Apertiiif::Error)
+      expect do
+        quiet_stdout { Apertiiif::Asset.new(@parent_id, @source, @config) }
+      end.to raise_error(Apertiiif::Error)
     end
 
     context 'when given requisite configuration'

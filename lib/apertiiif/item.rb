@@ -89,8 +89,7 @@ module Apertiiif
     end
 
     def write_presentation_json
-      FileUtils.mkdir_p File.dirname(manifest_file)
-      File.open(manifest_file, 'w') { |file| file.write manifest.to_json(pretty: true) }
+      Apertiiif::Utils.mkfile_p manifest_file, manifest.to_json(pretty: true)
     end
 
     def to_hash

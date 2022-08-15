@@ -24,12 +24,11 @@ Gem::Specification.new do |spec|
   spec.executables    = ['apertiiif']
   spec.require_paths  = ['lib']
 
+  spec.add_dependency 'colorize'
   spec.add_dependency 'iiif-presentation'
   spec.add_dependency 'mimemagic'
   spec.add_dependency 'parallel'
   spec.add_dependency 'ruby-progressbar'
-  # spec.add_dependency 'progress_bar'
-  spec.add_dependency 'rainbow'
   spec.add_dependency 'ruby-vips'
   spec.add_dependency 'safe_yaml'
   spec.add_dependency 'thor'

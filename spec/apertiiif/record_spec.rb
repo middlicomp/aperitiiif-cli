@@ -27,7 +27,9 @@ RSpec.describe Apertiiif::Record do
     context 'when given an invalid hash (without an id)' do
       it 'raises custom error' do
         @hash = { 'bad' => true }
-        expect { Apertiiif::Record.new(@hash) }.to raise_error(Apertiiif::Error)
+        expect do
+          quiet_stdout { Apertiiif::Record.new(@hash) }
+        end.to raise_error(Apertiiif::Error)
       end
     end
   end

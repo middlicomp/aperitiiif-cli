@@ -15,8 +15,8 @@ module Apertiiif
     end
 
     def lint
-      puts Rainbow('Linting...').cyan
-      puts Rainbow('Passed ✓').green unless report_failures.any?
+      puts 'Linting...'.colorize(:cyan)
+      puts 'Passed ✓'.colorize(:green) unless report_failures.any?
     end
 
     def report_failures
@@ -28,8 +28,8 @@ module Apertiiif
       nil_record_items = items.select { |item| item.record.blank? }
       return false if nil_record_items.empty?
 
-      warn Rainbow("Could not find record(s) for #{nil_record_items.length} items:").orange
-      nil_record_items.each { |item| puts Rainbow(Utils.rm_batch_namespace(item.id)).yellow }
+      warn "Could not find record(s) for #{nil_record_items.length} items:".colorze(:orange)
+      nil_record_items.each { |item| puts Utils.rm_batch_namespace(item.id).colorize(:yellow) }
       true
     end
 
@@ -39,8 +39,8 @@ module Apertiiif
       dup_ids = ids.select { |id| ids.count(id) > 1 }.uniq
       return false if dup_ids.empty?
 
-      warn Rainbow("Found #{dup_ids.length} non-unique record id value(s):").orange
-      dup_ids.each { |id| puts Rainbow(id).yellow }
+      warn "Found #{dup_ids.length} non-unique record id value(s):".colorze(:orange)
+      dup_ids.each { |id| puts id.colorize(:yellow) }
       true
     end
 
@@ -53,8 +53,8 @@ module Apertiiif
       duplicate_names = files.select { |file| files.count(file) > 1 }.uniq
       return false if duplicate_names.empty?
 
-      warn Rainbow("Found #{duplicate_names.length} duplicate image name(s):").orange
-      duplicate_names.each { |name| puts Rainbow(Utils.prune_prefix_junk(name)).yellow }
+      warn "Found #{duplicate_names.length} duplicate image name(s):".colorze(:orange)
+      duplicate_names.each { |name| puts Utils.prune_prefix_junk(name).colorize(:yellow) }
       true
     end
     # rubocop: enable Metrics/AbcSize
@@ -64,8 +64,8 @@ module Apertiiif
       no_label_records = records.select { |record| record.label.to_s.empty? }
       return false if no_label_records.empty?
 
-      warn Rainbow("Found #{no_label_records.length} record(s) missing labels (strongly encouraged):").orange
-      no_label_records.each { |record| puts Rainbow(record.id).yellow }
+      warn "Found #{no_label_records.length} record(s) missing labels (strongly encouraged):".colorze(:orange)
+      no_label_records.each { |record| puts record.id.colorize(:yellow) }
       true
     end
 
@@ -76,9 +76,9 @@ module Apertiiif
       stray_files.select! { |file| File.file?(file) && !file.end_with?(*ALLOWED_SRC_FORMATS) }
       return false if stray_files.empty?
 
-      warn Rainbow("Found #{stray_files.length} stray file(s) with unaccepted file types:").orange
-      stray_files.each { |file| puts Rainbow(file).yellow }
-      puts Rainbow("(Accepted file extensions: #{ALLOWED_SRC_FORMATS.join(', ')})").pink
+      warn "Found #{stray_files.length} stray file(s) with unaccepted file types:".colorze(:orange)
+      stray_files.each { |file| puts file.colorize(:yellow) }
+      puts "(Accepted file extensions: #{ALLOWED_SRC_FORMATS.join(', ')})".colorize(:pink)
       true
     end
     # rubocop:enable Metrics/AbcSize
