@@ -19,19 +19,18 @@ module Apertiiif
     def write_html_index(_items = items)
       index_file = "#{@config.html_build_dir}/index.html"
       FileUtils.mkdir_p File.dirname(index_file)
-      puts Rainbow('Creating HTML index of items...').cyan
-
+      print Rainbow('Writing HTML index of items...').cyan
       File.open(index_file, 'w') { |file| file.write to_html }
-      puts Rainbow('Done ✓').green
+      print("\r#{Rainbow('Writing HTML index:').cyan} #{Rainbow('Done ✓').green}        \n")
     end
 
     def write_json_index(items = self.items)
       index_file = "#{@config.html_build_dir}/index.json"
       FileUtils.mkdir_p File.dirname(index_file)
-      puts Rainbow('Creating JSON index of items...').cyan
+      print Rainbow('Creating JSON index of items...').cyan
 
       File.open(index_file, 'w') { |file| file.write to_json(items) }
-      puts Rainbow('Done ✓').green
+      print("\r#{Rainbow('Writing JSON index:').cyan} #{Rainbow('Done ✓').green}        \n")
     end
 
     # has smell :reek:DuplicateMethodCall

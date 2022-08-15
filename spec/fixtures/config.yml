@@ -5,8 +5,10 @@ attribution:    'Provided by Rijksmuseum via Wikimedia Commons'
 presentation_api_url: 'https://nyu-dss-serverless-iiif-presentation-test.s3.us-east-1.amazonaws.com'
 image_api_url:        'https://twt4gwyokx4jxgo2tcptgtn4v40qajbb.lambda-url.us-east-1.on.aws/iiif/2'
 
+source_dir: 'spec/fixtures/src/data/valid'
+
 records:
-  file: 'src/records.csv'
+  file: 'spec/fixtures/src/valid.csv'
   defaults:
     logo: 'https://upload.wikimedia.org/wikipedia/commons/6/67/Rijks_museum_logo.png'
     source: 'https://commons.wikimedia.org/wiki/Category:Prints_by_Katsukawa_Shunsh%C5%8D_in_the_Rijksmuseum_Amsterdam'

@@ -14,7 +14,7 @@ RSpec.describe Apertiiif::Item do
       }
     }
     @id         = 'test'
-    @source     = 'spec/fixtures/valid.jpeg'
+    @source     = 'spec/fixtures/src/data/valid/valid.jpeg'
     @conf_opts  = {
       'label' => 'my batch label',
       'presentation_api_url' => 'https://example.com/presentation',

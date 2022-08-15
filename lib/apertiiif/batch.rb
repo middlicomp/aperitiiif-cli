@@ -2,7 +2,7 @@
 
 require 'fileutils'
 require 'parallel'
-require 'progress_bar'
+require 'ruby-progressbar'
 require 'safe_yaml'
 
 require 'apertiiif/batch/assets'
@@ -42,31 +42,22 @@ module Apertiiif
     end
 
     def reset(dir = config.build_dir)
-      puts Rainbow('Resetting build...').cyan
+      print Rainbow('Resetting build...').cyan
       FileUtils.rm_rf dir
-      puts Rainbow('Done ✓').green
+      print("\r#{Rainbow('Resetting build:').cyan} #{Rainbow('Done ✓').green}")
     end
 
     def write_target_assets(assets = self.assets)
-      bar = ProgressBar.new :rate
-      puts Rainbow('Writing target image TIFs...').cyan
-      Parallel.each assets do |asset|
-        asset.write_to_target
-        bar.increment!
-      end
-      puts Rainbow("\nDone ✓").green
+      msg = Rainbow('Writing target image TIFs').cyan
+      Parallel.map(assets, in_threads: 4, progress: { format: "#{msg}: %c/%u | %P%" }, &:write_to_target)
     end
 
     # has smell :reek:TooManyStatements
     def write_presentation_json(items = self.items)
-      bar = ProgressBar.new :rate
-      puts Rainbow('Creating IIIF Presentation JSON...').cyan
+      msg = Rainbow('Writing IIIF Presentation JSON').cyan
       load_records!
-      Parallel.each items do |item|
-        item.write_presentation_json && bar.increment!
-      end
+      Parallel.map(items, in_threads: 4, progress: { format: "#{msg}: %c/%u | %P%" }, &:write_presentation_json)
       write_iiif_collection_json
-      puts Rainbow("\nDone ✓").green
     end
 
     def seed
@@ -84,8 +75,9 @@ module Apertiiif
       collection
     end
 
-    def iiif_collection_file  = "#{config.presentation_build_dir}/#{config.namespace}/collection.json"
-    def iiif_collection_url   = "#{config.presentation_api_url}/#{config.namespace}/collection.json"
+    def iiif_collection_file      = "#{config.presentation_build_dir}/#{config.namespace}/collection.json"
+    def iiif_collection_url       = "#{config.presentation_api_url}/#{config.namespace}/collection.json"
+    def iiif_collection_written?  = File.file? iiif_collection_file
 
     def write_iiif_collection_json
       FileUtils.mkdir_p File.dirname(iiif_collection_file)

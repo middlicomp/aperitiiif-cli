@@ -71,24 +71,22 @@ RSpec.describe Apertiiif::Batch do
   end
 
   describe '.write_target_assets' do
-    context 'with no source assets loaded' do
-      it 'warns the user but does not throw error' do
-        skip 'implement after Apertiiif::Batch::Assets tests'
-        quiet_stdout { @batch.write_target_assets }
-      end
-    end
     context 'with source assets loaded' do
       it 'writes the target (converted TIF) assets to the build dir' do
-        skip 'implement after Apertiiif::Batch::Assets tests'
+        quiet_stdout { @batch.reset }
         quiet_stdout { @batch.write_target_assets }
+        @written = @batch.assets.map(&:target_written?)
+        expect(@written).to all be
       end
     end
   end
 
   describe '.write_presentation_json' do
     it 'writes item IIIF manifest files to presentation build dir' do
-      skip 'implement after Apertiiif::Batch::Items tests'
+      quiet_stdout { @batch.reset }
       quiet_stdout { @batch.write_presentation_json }
+      @written = @batch.items.map(&:manifest_written?)
+      expect(@written).to all be
     end
   end
 
@@ -100,8 +98,7 @@ RSpec.describe Apertiiif::Batch do
 
   describe '.iiif_collection' do
     it 'returns a iiif collection' do
-      skip 'implement after Apertiiif::Batch::Items tests'
-      quiet_stdout { @batch.iiif_collection }
+      expect(@batch.iiif_collection).to be_a(IIIF::Presentation::Collection)
     end
   end
 
@@ -120,8 +117,9 @@ RSpec.describe Apertiiif::Batch do
 
   describe '.write_iiif_collection_json' do
     it 'writes one IIIF collection file to presentation build dir' do
-      skip 'implement after Apertiiif::Batch::Items tests'
+      quiet_stdout { @batch.reset }
       quiet_stdout { @batch.write_iiif_collection_json }
+      expect(@batch.iiif_collection_written?).to be
     end
   end
 end

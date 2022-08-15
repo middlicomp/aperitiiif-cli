@@ -21,7 +21,7 @@ RSpec.describe Apertiiif::Utils do
   describe '.mime' do
     context 'when given a jpeg image path' do
       it 'returns jpeg mime string' do
-        @mime = Apertiiif::Utils.mime 'spec/fixtures/valid.jpeg'
+        @mime = Apertiiif::Utils.mime 'spec/fixtures/src/data/valid/valid.jpeg'
         expect(@mime).to eq('image/jpeg')
       end
     end
@@ -30,7 +30,7 @@ RSpec.describe Apertiiif::Utils do
   describe '.valid_source?' do
     context 'when given existing jpeg file path' do
       it 'returns true' do
-        @path   = 'spec/fixtures/valid.jpeg'
+        @path   = 'spec/fixtures/src/data/valid/valid.jpeg'
         @result = Apertiiif::Utils.valid_source? @path
         expect(@result).to be(true)
       end
@@ -38,7 +38,7 @@ RSpec.describe Apertiiif::Utils do
 
     context 'when given existing mp3 file path' do
       it 'returns false' do
-        @path   = 'spec/fixtures/invalid_type.mp3'
+        @path   = 'spec/fixtures/src/data/invalid/invalid_type.mp3'
         @result = Apertiiif::Utils.valid_source? @path
         expect(@result).to be(false)
       end
@@ -56,7 +56,7 @@ RSpec.describe Apertiiif::Utils do
   describe '.item_assets_from_path' do
     context 'when given path to a valid image file' do
       it 'returns an array with path as only value' do
-        @path   = 'spec/fixtures/valid.jpeg'
+        @path   = 'spec/fixtures/src/data/valid/valid.jpeg'
         @result = Apertiiif::Utils.item_assets_from_path @path
         expect(@result).to be_an(Array)
         expect(@result.first).to eq(@path)
@@ -65,7 +65,7 @@ RSpec.describe Apertiiif::Utils do
 
     context 'when given path to an invalid image file' do
       it 'returns an empty array' do
-        @path = 'spec/fixtures/invalid_type.mp3'
+        @path = 'spec/fixtures/src/data/invalid/invalid_type.mp3'
         @result = Apertiiif::Utils.item_assets_from_path @path
         expect(@result).to be_an(Array)
         expect(@result).to be_empty
@@ -74,7 +74,7 @@ RSpec.describe Apertiiif::Utils do
 
     context 'when given path to a directory of valid image files' do
       it 'returns an array with image file paths as values' do
-        @path = 'spec/fixtures/valid_dir'
+        @path = 'spec/fixtures/data/valid/dir'
         @result = Apertiiif::Utils.item_assets_from_path @path
         expect(@result).to be_an(Array)
         expect(@result).to all be_a(String)
@@ -83,7 +83,7 @@ RSpec.describe Apertiiif::Utils do
 
     context 'when given path to a directory of invalid image files' do
       it 'returns an empty array' do
-        @path = 'spec/fictures/invalid_dir'
+        @path = 'spec/fixtures/data/invalid/dir'
         @result = Apertiiif::Utils.item_assets_from_path @path
         expect(@result).to be_an(Array)
         expect(@result).to be_empty
@@ -94,7 +94,7 @@ RSpec.describe Apertiiif::Utils do
   describe '.csv_records' do
     context 'when given a valid csv file' do
       before(:example) do
-        @path = 'spec/fixtures/valid.csv'
+        @path = 'spec/fixtures/src/valid.csv'
       end
       it 'returns an array of records' do
         @result = Apertiiif::Utils.csv_records @path
@@ -114,7 +114,7 @@ RSpec.describe Apertiiif::Utils do
 
     context 'when given an invalid csv file' do
       it 'raises a custom error' do
-        @path = 'spec/fixtures/invalid.csv'
+        @path = 'spec/fixtures/src/invalid.csv'
         expect { Apertiiif::Utils.csv_records(@path) }.to raise_error(Apertiiif::Error)
       end
     end

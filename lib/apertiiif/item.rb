@@ -84,6 +84,10 @@ module Apertiiif
       "#{@config.presentation_build_dir}/#{@config.namespace}/#{id}/manifest.json"
     end
 
+    def manifest_written?
+      File.file? manifest_file
+    end
+
     def write_presentation_json
       FileUtils.mkdir_p File.dirname(manifest_file)
       File.open(manifest_file, 'w') { |file| file.write manifest.to_json(pretty: true) }
