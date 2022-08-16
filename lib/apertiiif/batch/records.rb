@@ -23,14 +23,14 @@ module Apertiiif
     def records_file_configured?(file = config.records_file)
       return true if file.present?
 
-      warn 'WARNING:: No records file configured'.colorze(:orange)
+      warn 'WARNING:: No records file configured'.colorize(:yellow)
       false
     end
 
     def records_file_exists?(file = config.records_file)
       return true if File.file?(file)
 
-      warn "WARNING:: Couldn't find records file #{file}".colorze(:orange)
+      warn "WARNING:: Couldn't find records file #{file}".colorize(:yellow)
       false
     end
 
