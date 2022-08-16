@@ -130,10 +130,4 @@ RSpec.describe Apertiiif::Item do
       expect(@item.to_hash).to be_a(Hash)
     end
   end
-
-  describe '.to_html_list_item' do
-    it 'returns html partial string' do
-      expect(@item.to_html_list_item).to include(@item.viewpoint_url)
-    end
-  end
 end

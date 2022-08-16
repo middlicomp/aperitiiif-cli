@@ -14,8 +14,6 @@ module Apertiiif
     attr_writer :record
     attr_reader :id, :assets
 
-    IIIF_LOGO = 'https://upload.wikimedia.org/wikipedia/commons/e/e8/International_Image_Interoperability_Framework_logo.png'
-
     def initialize(id, assets, config)
       @id       = id
       @config   = config
@@ -95,21 +93,11 @@ module Apertiiif
     def to_hash
       {
         'id' => id,
-        'manifest' => manifest_url,
-        'thumbnail' => thumbnail_url
+        'label' => label,
+        'manifest_url' => manifest_url,
+        'thumbnail_url' => thumbnail_url,
+        'viewpoint_url' => viewpoint_url
       }
-    end
-
-    def to_html_list_item
-      <<~HTML
-        <tr>
-          <td><b>#{id}</b></td>
-          <td>#{label}</td>
-          <td><a target='_blank' href='#{thumbnail_url}'><img style="height:100px;width:auto" class='lazy' data-original="#{thumbnail_url}"/></a></td>
-          <td><a target='_blank' href='#{manifest_url}'><img alt='Thumbnail #{label}' src="#{IIIF_LOGO}" style="width:25px"/></a></td>
-          <td><a target='_blank' class='is-size-7' href='#{viewpoint_url}'>#{viewpoint_url}</a></td>
-        </tr>
-      HTML
     end
   end
 end

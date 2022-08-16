@@ -26,6 +26,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'colorize'
   spec.add_dependency 'iiif-presentation'
+  spec.add_dependency 'liquid'
   spec.add_dependency 'mimemagic'
   spec.add_dependency 'parallel'
   spec.add_dependency 'ruby-progressbar'

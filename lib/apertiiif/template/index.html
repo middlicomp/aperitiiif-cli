@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8'>
+    <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>{{ config.label }} | apertiiif batch listing</title>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css'>
+    <link rel='stylesheet' href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css'>
+  </head>
+  <body>
+    <section class='hero is-info'>
+      <div class='hero-body'>
+        <div class='container'>
+          <h1 class='title'>{{ config.label }}</h1>
+          <p class='subtitle'>Apertiiif Batch Index</p>
+          <p class='is-5 is-grey'>Last updated {{ formatted_date }}</p>
+          <p class='tags mt-5'>
+            <a target='_blank' class='tag is-danger is-light' href='{{ iiif_collection_url }}'>iiif collection</a>
+            <a target='_blank' class='tag is-link is-light' href='index.json'>index.json</a>
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class='section'>
+      <div class='container'>
+        <h2 class='is-size-4 mb-3'>Items ({{ items.size }})</h2>
+        <div class='table-container'>
+          <table id='table' class='table display is-hoverable is-striped is-bordered'>
+            <thead>
+              <tr>
+                <td>item id</td>
+                <td>label</td>
+                <td>thumbnnail</td>
+                <td>iiif manifest</td>
+                <td>view in viewpoint</td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in items %}
+              <tr>
+                <td><b>{{ item.id }}</b></td>
+                <td>{{ item.label }}</td>
+                <td><a target='_blank' href='{{ item.thumbnail_url }}'><img style="height:100px;width:auto" class='lazy' data-original="{{ item.thumbnail_url }}"/></a></td>
+                <td><a target='_blank' href='{{ item.manifest_url }}'><img alt='Thumbnail {{ item.label }}' src='https://upload.wikimedia.org/wikipedia/commons/e/e8/International_Image_Interoperability_Framework_logo.png' style="width:25px"/></a></td>
+                <td><a target='_blank' class='is-size-7' href='{{ item.viewpoint_url }}'>{{ item.viewpoint_url }}</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </table>
+      </div>
+    </section>
+    <script src='https://code.jquery.com/jquery-3.5.1.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js'></script>
+    <script src='https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js'></script>
+    <script>
+      $(document).ready(function () {
+        $('#table').DataTable( {
+          drawCallback: function(){
+            $('img.lazy').lazyload();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

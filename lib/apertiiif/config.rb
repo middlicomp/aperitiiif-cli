@@ -5,7 +5,7 @@ module Apertiiif
   # has smell :reek:Attribute
   # TO DO COMMENT
   class Config
-    attr_reader :namespace
+    attr_reader :namespace, :hash
 
     DELEGATE       = %i[puts p].freeze
     DEFAULT_VALUES = {
