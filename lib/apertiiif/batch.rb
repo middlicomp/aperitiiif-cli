@@ -40,9 +40,9 @@ module Apertiiif
     end
 
     def reset(dir = config.build_dir)
-      print 'Resetting build...'.colorize(:cyan)
+      puts 'Resetting build...'.colorize(:cyan)
       FileUtils.rm_rf dir
-      print("\r#{'Resetting build:'.colorize(:cyan)} #{'Done ✓'.colorize(:green)}")
+      puts 'Done ✓'.colorize(:green)
     end
 
     def write_target_assets(assets = self.assets)
