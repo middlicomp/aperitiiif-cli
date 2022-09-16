@@ -14,7 +14,7 @@ end
 
 FileUtils.rm_rf BUILD_DIR
 
-require 'apertiiif'
+require 'aperitiiif'
 
 # debug helper method
 # :reek:DuplicateMethodCall

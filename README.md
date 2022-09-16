@@ -1,16 +1,16 @@
-# apertiiif-cli
+# aperitiiif-cli
 
-gem-packaged commands for processing apertiiif batches 🥂
+gem-packaged commands for processing aperitiiif batches 🥂
 
-[![rspec](https://github.com/nyu-dss/apertiiif/actions/workflows/rspec.yml/badge.svg)](https://github.com/nyu-dss/apertiiif/actions/workflows/rspec.yml) [![reek](https://github.com/nyu-dss/apertiiif/actions/workflows/reek.yml/badge.svg)](https://github.com/nyu-dss/apertiiif/actions/workflows/reek.yml) [![rubocop](https://github.com/nyu-dss/apertiiif/actions/workflows/rubocop.yml/badge.svg)](https://github.com/nyu-dss/apertiiif/actions/workflows/rubocop.yml)  
+[![rspec](https://github.com/nyu-dss/aperitiiif-cli/actions/workflows/rspec.yml/badge.svg)](https://github.com/nyu-dss/aperitiiif/actions/workflows/rspec.yml) [![reek](https://github.com/nyu-dss/aperitiiif-cli/actions/workflows/reek.yml/badge.svg)](https://github.com/nyu-dss/aperitiiif/actions/workflows/reek.yml) [![rubocop](https://github.com/nyu-dss/aperitiiif-cli/actions/workflows/rubocop.yml/badge.svg)](https://github.com/nyu-dss/aperitiiif/actions/workflows/rubocop.yml)  
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/c25005f1fd12e7a86122/maintainability)](https://codeclimate.com/github/nyu-dss/apertiiif/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/c25005f1fd12e7a86122/test_coverage)](https://codeclimate.com/github/nyu-dss/apertiiif/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/c25005f1fd12e7a86122/maintainability)](https://codeclimate.com/github/nyu-dss/aperitiiif/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/c25005f1fd12e7a86122/test_coverage)](https://codeclimate.com/github/nyu-dss/aperitiiif/test_coverage)
 
 ## Overview
 
-<img alt="apertiiif service diagram" src="./docs/apertiiif.jpg" height="300"/>
+<img alt="aperitiiif service diagram" src="./docs/aperitiiif.jpg" height="300"/>
 
-> View as [PDF](./docs/apertiiif.pdf).
+> View as [PDF](./docs/aperitiiif.pdf).
 
 
 ## Prerequisites
@@ -22,14 +22,14 @@ gem-packaged commands for processing apertiiif batches 🥂
 
 ### Recommended
 
-It is highly recommended that you use the [apertiiif-batch-template](https://github.com/nyu-dss/apertiiif-batch-template) repo to create your new batch project. This method will include all the necessary Ruby dependencies and project structure.
+It is highly recommended that you use the [aperitiiif-batch-template](https://github.com/nyu-dss/aperitiiif-batch-template) repo to create your new batch project. This method will include all the necessary Ruby dependencies and project structure.
 
 ### Manual
 
 Alternatively, you can add the gem to your project's Gemfile:
 
 ``` ruby
-gem 'apertiiif', github: 'nyu-dss/apertiiif-cli'
+gem 'aperitiiif', github: 'nyu-dss/aperitiiif-cli'
 ```
 
 Then install by running the command:
@@ -40,24 +40,24 @@ bundle install
 
 ## Usage
 
-After your batch project is set up and you have installed the dependencies using Bundler, you will have access to the `apertiiif` commands.
+After your batch project is set up and you have installed the dependencies using Bundler, you will have access to the `aperitiiif` commands.
 
 1. Check available commands
   ```sh
-  bundle exec apertiiif --help
+  bundle exec aperitiiif --help
   ```
 2. Check available batch commands
   ```sh
-  bundle exec apertiiif batch --help
+  bundle exec aperitiiif batch --help
   ```
   You will see something like:
   ```sh
-  ➜ bundle exec apertiiif batch --help
+  ➜ bundle exec aperitiiif batch --help
     Commands:
-    apertiiif batch build           # build batch resources
-    apertiiif batch help [COMMAND]  # Describe subcommands or one specific subc...
-    apertiiif batch lint            # lint the batch
-    apertiiif batch reset           # reset the batch
+    aperitiiif batch build           # build batch resources
+    aperitiiif batch help [COMMAND]  # Describe subcommands or one specific subc...
+    aperitiiif batch lint            # lint the batch
+    aperitiiif batch reset           # reset the batch
   ```
 
 ## Development
