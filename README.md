@@ -2,7 +2,7 @@
 
 gem-packaged commands for processing aperitiiif batches 🥂
 
-[![rspec](https://github.com/nyu-dss/aperitiiif/actions/workflows/rspec.yml/badge.svg)](https://github.com/nyu-dss/aperitiiif/actions/workflows/rspec.yml) [![reek](https://github.com/nyu-dss/aperitiiif/actions/workflows/reek.yml/badge.svg)](https://github.com/nyu-dss/aperitiiif/actions/workflows/reek.yml) [![rubocop](https://github.com/nyu-dss/aperitiiif/actions/workflows/rubocop.yml/badge.svg)](https://github.com/nyu-dss/aperitiiif/actions/workflows/rubocop.yml)  
+[![rspec](https://github.com/nyu-dss/aperitiiif-cli/actions/workflows/rspec.yml/badge.svg)](https://github.com/nyu-dss/aperitiiif/actions/workflows/rspec.yml) [![reek](https://github.com/nyu-dss/aperitiiif-cli/actions/workflows/reek.yml/badge.svg)](https://github.com/nyu-dss/aperitiiif/actions/workflows/reek.yml) [![rubocop](https://github.com/nyu-dss/aperitiiif-cli/actions/workflows/rubocop.yml/badge.svg)](https://github.com/nyu-dss/aperitiiif/actions/workflows/rubocop.yml)  
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/c25005f1fd12e7a86122/maintainability)](https://codeclimate.com/github/nyu-dss/aperitiiif/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/c25005f1fd12e7a86122/test_coverage)](https://codeclimate.com/github/nyu-dss/aperitiiif/test_coverage)
 
