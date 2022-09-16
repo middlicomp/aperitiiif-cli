@@ -11,7 +11,7 @@ module Apertiiif
   class Asset
     attr_reader :parent_id
 
-    TARGET_EXT = '.tif'
+    TARGET_EXT = '.jpg'
 
     def initialize(parent_id, source, config)
       @parent_id  = parent_id
