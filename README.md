@@ -8,9 +8,9 @@ gem-packaged commands for processing aperitiiif batches 🥂
 
 ## Overview
 
-<img alt="aperitiiif service diagram" src="./docs/aperitiiif.jpg" height="300"/>
+<img alt="aperitiiif service diagram" src="https://nyu-dss.github.io/aperitiiif/media/aperitiiif.jpg" style="max-height:300px;width:auto" />
 
-> View as [PDF](./docs/aperitiiif.pdf).
+> View as [PDF](https://nyu-dss.github.io/aperitiiif/media/aperitiiif.pdf).
 
 
 ## Prerequisites
