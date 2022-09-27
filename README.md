@@ -6,12 +6,9 @@ gem-packaged commands for processing aperitiiif batches 🥂
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/c25005f1fd12e7a86122/maintainability)](https://codeclimate.com/github/nyu-dss/aperitiiif/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/c25005f1fd12e7a86122/test_coverage)](https://codeclimate.com/github/nyu-dss/aperitiiif/test_coverage)
 
-## Overview
-
-<img alt="aperitiiif service diagram" src="https://nyu-dss.github.io/aperitiiif/media/aperitiiif.jpg" style="max-height:300px;width:auto" />
-
-> View as [PDF](https://nyu-dss.github.io/aperitiiif/media/aperitiiif.pdf).
-
+### Related repos:
+- **[aperitiiif](https://github.com/nyu-dss/aperitiiif)** : documentation for the project; publishes to [github pages](https://nyu-dss.github.io/aperitiiif)
+- **[aperitiiif-batch-template](https://github.com/nyu-dss/aperitiiif-batch-template)** : template repository for creating batches; includes github actions workflows, gem configs, and project scaffolding.
 
 ## Prerequisites
 - [Ruby Version Manager](https://rvm.io/rvm/install)
