@@ -11,7 +11,8 @@ module Aperitiiif
   class Asset
     attr_reader :parent_id
 
-    TARGET_EXT = '.jpg'
+    TARGET_EXT  = '.tif'
+    TARGET_OPTS = { tile: :pyramid, compression: :jpeg, tile_width: 256, tile_height: 256 }.freeze
 
     def initialize(parent_id, source, config)
       @parent_id  = parent_id
@@ -93,7 +94,8 @@ module Aperitiiif
       return false if target_written?
 
       FileUtils.mkdir_p @config.image_build_dir
-      Vips::Image.new_from_file(@source).write_to_file target
+      Vips::Image.new_from_file(@source).tiffsave target, **TARGET_OPTS
+      GC.start
     end
 
     def service

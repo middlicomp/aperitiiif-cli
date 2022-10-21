@@ -50,7 +50,7 @@ RSpec.describe Aperitiiif::Asset do
 
   describe '.target_mime' do
     it 'returns tiff mime string' do
-      expect(@asset.target_mime).to eq('image/jpeg')
+      expect(@asset.target_mime).to eq('image/tiff')
     end
   end
 
