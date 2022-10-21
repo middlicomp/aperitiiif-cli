@@ -95,7 +95,6 @@ module Aperitiiif
 
       FileUtils.mkdir_p @config.image_build_dir
       Vips::Image.new_from_file(@source).tiffsave target, **TARGET_OPTS
-      # system "vips tiffsave #{@source} #{target} --tile --pyramid --compression jpeg --tile-width 256 --tile-height 256"
     end
 
     def service

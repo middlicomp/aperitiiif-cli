@@ -2,6 +2,7 @@
 
 require 'colorize'
 require 'thor'
+require 'vips'
 
 require 'aperitiiif/asset'
 require 'aperitiiif/batch'

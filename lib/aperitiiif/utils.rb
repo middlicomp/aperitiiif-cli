@@ -11,7 +11,7 @@ module Aperitiiif
     def self.parent_id(str, dir)    = prune_prefix_junk(rm_ext(str.sub(dir, '')))
     def self.parent_dir(str)        = File.dirname(str).split('/').last
     def self.prune_prefix_junk(str) = str.sub(/^(_|\W+)/, '')
-    def self.mime(path) = MimeMagic.by_magic(File.open(path)).to_s
+    def self.mime(path) = MimeMagic.by_path(path).to_s
     def self.valid_source?(path) = File.file?(path) && path.end_with?(*ALLOWED_SRC_FORMATS)
 
     def self.slugify(str)
