@@ -95,6 +95,7 @@ module Aperitiiif
 
       FileUtils.mkdir_p @config.image_build_dir
       Vips::Image.new_from_file(@source).tiffsave target, **TARGET_OPTS
+      GC.start
     end
 
     def service

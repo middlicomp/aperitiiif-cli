@@ -46,14 +46,12 @@ module Aperitiiif
     end
 
     def write_target_assets(assets = self.assets)
-      GC.start
       msg = 'Writing target image TIFs'.colorize(:cyan)
       Parallel.map(assets, in_threads: 4, progress: { format: "#{msg}: %c/%u | %P%" }, &:write_to_target)
     end
 
     # has smell :reek:TooManyStatements
     def write_presentation_json(items = self.items)
-      GC.start
       msg = 'Writing IIIF Presentation JSON'.colorize(:cyan)
       load_records!
       Parallel.map(items, in_threads: 4, progress: { format: "#{msg}: %c/%u | %P%" }, &:write_presentation_json)
