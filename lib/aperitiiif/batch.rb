@@ -47,14 +47,14 @@ module Aperitiiif
 
     def write_target_assets(assets = self.assets)
       msg = 'Writing target image TIFs'.colorize(:cyan)
-      Parallel.map(assets, in_threads: 4, progress: { format: "#{msg}: %c/%u | %P%" }, &:write_to_target)
+      Parallel.map(assets, progress: { format: "#{msg}: %c/%u | %P%" }, &:write_to_target)
     end
 
     # has smell :reek:TooManyStatements
     def write_presentation_json(items = self.items)
       msg = 'Writing IIIF Presentation JSON'.colorize(:cyan)
       load_records!
-      Parallel.map(items, in_threads: 4, progress: { format: "#{msg}: %c/%u | %P%" }, &:write_presentation_json)
+      Parallel.map(items, progress: { format: "#{msg}: %c/%u | %P%" }, &:write_presentation_json)
       write_iiif_collection_json
     end
 
