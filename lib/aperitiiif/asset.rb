@@ -65,7 +65,7 @@ module Aperitiiif
     end
 
     def thumbnail_url
-      @thumbnail_url ||= "#{@config.image_api_url}/#{id}/full/250,/0/default.jpg"
+      @thumbnail_url ||= "#{@config.image_api_url}/#{id}/square/250,/0/default.jpg"
     end
 
     def annotation_url
