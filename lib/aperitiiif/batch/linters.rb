@@ -28,7 +28,7 @@ module Aperitiiif
       nil_record_items = items.select { |item| item.record.blank? }
       return false if nil_record_items.empty?
 
-      warn "Could not find record(s) for #{nil_record_items.length} items:".colorze(:orange)
+      warn "Could not find record(s) for #{nil_record_items.length} items:".colorize(:orange)
       nil_record_items.each { |item| puts Utils.rm_batch_namespace(item.id).colorize(:yellow) }
       true
     end
@@ -39,7 +39,7 @@ module Aperitiiif
       dup_ids = ids.select { |id| ids.count(id) > 1 }.uniq
       return false if dup_ids.empty?
 
-      warn "Found #{dup_ids.length} non-unique record id value(s):".colorze(:orange)
+      warn "Found #{dup_ids.length} non-unique record id value(s):".colorize(:orange)
       dup_ids.each { |id| puts id.colorize(:yellow) }
       true
     end
@@ -53,7 +53,7 @@ module Aperitiiif
       duplicate_names = files.select { |file| files.count(file) > 1 }.uniq
       return false if duplicate_names.empty?
 
-      warn "Found #{duplicate_names.length} duplicate image name(s):".colorze(:orange)
+      warn "Found #{duplicate_names.length} duplicate image name(s):".colorize(:orange)
       duplicate_names.each { |name| puts Utils.prune_prefix_junk(name).colorize(:yellow) }
       true
     end
@@ -64,7 +64,7 @@ module Aperitiiif
       no_label_records = records.select { |record| record.label.to_s.empty? }
       return false if no_label_records.empty?
 
-      warn "Found #{no_label_records.length} record(s) missing labels (strongly encouraged):".colorze(:orange)
+      warn "Found #{no_label_records.length} record(s) missing labels (strongly encouraged):".colorize(:orange)
       no_label_records.each { |record| puts record.id.colorize(:yellow) }
       true
     end
@@ -76,7 +76,7 @@ module Aperitiiif
       stray_files.select! { |file| File.file?(file) && !file.end_with?(*ALLOWED_SRC_FORMATS) }
       return false if stray_files.empty?
 
-      warn "Found #{stray_files.length} stray file(s) with unaccepted file types:".colorze(:orange)
+      warn "Found #{stray_files.length} stray file(s) with unaccepted file types:".colorize(:orange)
       stray_files.each { |file| puts file.colorize(:yellow) }
       puts "(Accepted file extensions: #{ALLOWED_SRC_FORMATS.join(', ')})".colorize(:pink)
       true
