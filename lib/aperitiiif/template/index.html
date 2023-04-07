@@ -5,8 +5,9 @@
     <meta http-equiv='X-UA-Compatible' content='ie=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>{{ config.label }} | aperitiiif batch listing</title>
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css'>
-    <link rel='stylesheet' href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css'>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css' />
+    <link rel='stylesheet' href='https://cdn.datatables.net/v/dt/dt-1.13.4/b-2.3.6/b-html5-2.3.6/datatables.min.css' />
+    <link rel='stylesheet' href='https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css' />
   </head>
   <body>
     <section class='hero is-info'>
@@ -33,7 +34,8 @@
                 <td>label</td>
                 <td>thumbnnail</td>
                 <td>iiif manifest</td>
-                <td>view in viewpoint</td>
+                <td>link to viewer</td>
+                <td>embed code</td>
               </tr>
             </thead>
             <tbody>
@@ -41,9 +43,24 @@
               <tr>
                 <td><b>{{ item.id }}</b></td>
                 <td>{{ item.label }}</td>
-                <td><a target='_blank' href='{{ item.thumbnail_url }}'><img style="height:100px;width:auto" class='lazy' data-original="{{ item.thumbnail_url }}"/></a></td>
-                <td><a target='_blank' href='{{ item.manifest_url }}'><img alt='Thumbnail {{ item.label }}' src='https://upload.wikimedia.org/wikipedia/commons/e/e8/International_Image_Interoperability_Framework_logo.png' style="width:25px"/></a></td>
-                <td><a target='_blank' class='is-size-7' href='{{ item.viewpoint_url }}'>{{ item.viewpoint_url }}</a></td>
+                <td>
+                  <a target='_blank' href='{{ item.thumbnail_url }}'>
+                    <img style="height:100px;width:auto" class='lazy' data-original="{{ item.thumbnail_url }}"/>
+                  </a>
+                </td>
+                <td>
+                  <a target='_blank' href="{{ item.manifest_url }}">
+                    {{ item.manifest_url }}
+                  </a>
+                </td>
+                <td>
+                  <a target='_blank' href='https://dss.hosting.nyu.edu/viewpoint/mirador/#manifests[]={{ item.manifest_url | url_encode }}'>
+                    https://dss.hosting.nyu.edu/viewpoint/mirador/#manifests[]={{ item.manifest_url | url_encode }}
+                  </a>
+                </td>
+                <td class="is-size-8">
+                  &lt;iframe src='https://dss.hosting.nyu.edu/viewpoint/mirador#manifests[]={{ item.manifest_url | url_encode }}&theme=light&thumbs=off&view=single&workspacecontrols=false' height='400'\>
+                </td>
               </tr>
               {% endfor %}
             </tbody>
@@ -53,10 +70,22 @@
     </section>
     <script src='https://code.jquery.com/jquery-3.5.1.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js'></script>
-    <script src='https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js'></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
     <script>
       $(document).ready(function () {
         $('#table').DataTable( {
+          dom: 'Bfrtip',
+          buttons: [ 
+            { extend: 'csv', 
+              text: 'GIG CSV',
+              filename: 'aperitiiif_gig',
+              exportOptions: {
+                columns: [0,5]
+              }
+            }
+          ],
           drawCallback: function(){
             $('img.lazy').lazyload();
           }
