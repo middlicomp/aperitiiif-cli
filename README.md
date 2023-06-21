@@ -2,13 +2,13 @@
 
 gem-packaged commands for processing aperitiiif batches 🥂
 
-[![rspec](https://github.com/nyu-dss/aperitiiif-cli/actions/workflows/rspec.yml/badge.svg)](https://github.com/nyu-dss/aperitiiif/actions/workflows/rspec.yml) [![reek](https://github.com/nyu-dss/aperitiiif-cli/actions/workflows/reek.yml/badge.svg)](https://github.com/nyu-dss/aperitiiif/actions/workflows/reek.yml) [![rubocop](https://github.com/nyu-dss/aperitiiif-cli/actions/workflows/rubocop.yml/badge.svg)](https://github.com/nyu-dss/aperitiiif/actions/workflows/rubocop.yml)  
+[![rspec](https://github.com/middlicomp/aperitiiif-cli/actions/workflows/rspec.yml/badge.svg)](https://github.com/middlicomp/aperitiiif-cli/actions/workflows/rspec.yml) [![reek](https://github.com/middlicomp/aperitiiif-cli/actions/workflows/reek.yml/badge.svg)](https://github.com/middlicomp/aperitiiif-cli//actions/workflows/reek.yml) [![rubocop](https://github.com/middlicomp/aperitiiif-cli/actions/workflows/rubocop.yml/badge.svg)](https://github.com/middlicomp/aperitiiif-cli//actions/workflows/rubocop.yml)  
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/c25005f1fd12e7a86122/maintainability)](https://codeclimate.com/github/nyu-dss/aperitiiif/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/c25005f1fd12e7a86122/test_coverage)](https://codeclimate.com/github/nyu-dss/aperitiiif/test_coverage)
 
 ### Related repos:
-- **[aperitiiif](https://github.com/nyu-dss/aperitiiif)** : documentation for the project; publishes to [github pages](https://nyu-dss.github.io/aperitiiif)
-- **[aperitiiif-batch-template](https://github.com/nyu-dss/aperitiiif-batch-template)** : template repository for creating batches; includes github actions workflows, gem configs, and project scaffolding.
+- **[aperitiiif](https://github.com/middlicomp/aperitiiif)** : documentation for the project; publishes to [github pages](https://nyu-dss.github.io/aperitiiif)
+- **[aperitiiif-batch-template](https://github.com/middlicomp/aperitiiif-batch-template)** : template repository for creating batches; includes github actions workflows, gem configs, and project scaffolding.
 
 ## Prerequisites
 - [Ruby Version Manager](https://rvm.io/rvm/install)
