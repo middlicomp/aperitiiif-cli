@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.require_paths  = ['lib']
 
   spec.add_dependency 'colorize'
-  spec.add_dependency 'iiif-presentation'
+  spec.add_dependency 'iiif-presentation', '1.1'
   spec.add_dependency 'liquid'
   spec.add_dependency 'mimemagic'
   spec.add_dependency 'parallel'

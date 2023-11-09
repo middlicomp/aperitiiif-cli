@@ -67,7 +67,7 @@ module Aperitiiif
         'description' => record.description,
         'source' => record.source,
         'metadata' => record.custom_metadata
-      }.delete_if { |_key, val| val.blank? }
+      }.delete_if { |_key, val| val.to_s.empty? }
     end
 
     def build_manifest
