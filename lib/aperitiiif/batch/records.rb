@@ -21,7 +21,7 @@ module Aperitiiif
     end
 
     def records_file_configured?(file = config.records_file)
-      return true if file.present?
+      return true unless file.to_s.empty?
 
       warn 'WARNING:: No records file configured'.colorize(:yellow)
       false
