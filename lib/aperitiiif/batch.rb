@@ -64,7 +64,7 @@ module Aperitiiif
         'label' => config.label,
         'description' => config.batch_description,
         'attribution' => config.batch_attribution
-      }.delete_if { |_key, val| val.blank? }
+      }.delete_if { |_key, val| val.to_s.empty? }
     end
 
     def iiif_collection

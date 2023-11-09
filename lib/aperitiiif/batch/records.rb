@@ -21,7 +21,7 @@ module Aperitiiif
     end
 
     def records_file_configured?(file = config.records_file)
-      return true if file.present?
+      return true unless file.to_s.empty?
 
       warn 'WARNING:: No records file configured'.colorize(:yellow)
       false
@@ -37,7 +37,7 @@ module Aperitiiif
     def load_records!
       self.items = items.map do |item|
         record = find_record(item.id, records)
-        item.record = record if record.present?
+        item.record = record unless record.to_s.empty?
         item
       end
     end
