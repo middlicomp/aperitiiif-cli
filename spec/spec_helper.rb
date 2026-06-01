@@ -17,8 +17,6 @@ FileUtils.rm_rf BUILD_DIR
 require 'aperitiiif'
 
 # debug helper method
-# :reek:DuplicateMethodCall
-# :reek:TooManyStatements
 # rubocop:disable Metrics/MethodLength
 def quiet_stdout
   if QUIET

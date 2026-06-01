@@ -2,7 +2,7 @@
 
 gem-packaged commands for processing aperitiiif batches 🥂
 
-[![rspec](https://github.com/middlicomp/aperitiiif-cli/actions/workflows/rspec.yml/badge.svg)](https://github.com/middlicomp/aperitiiif-cli/actions/workflows/rspec.yml) [![reek](https://github.com/middlicomp/aperitiiif-cli/actions/workflows/reek.yml/badge.svg)](https://github.com/middlicomp/aperitiiif-cli//actions/workflows/reek.yml) [![rubocop](https://github.com/middlicomp/aperitiiif-cli/actions/workflows/rubocop.yml/badge.svg)](https://github.com/middlicomp/aperitiiif-cli//actions/workflows/rubocop.yml)  
+[![rspec](https://github.com/middlicomp/aperitiiif-cli/actions/workflows/rspec.yml/badge.svg)](https://github.com/middlicomp/aperitiiif-cli/actions/workflows/rspec.yml) [![rubocop](https://github.com/middlicomp/aperitiiif-cli/actions/workflows/rubocop.yml/badge.svg)](https://github.com/middlicomp/aperitiiif-cli//actions/workflows/rubocop.yml)  
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/c25005f1fd12e7a86122/maintainability)](https://codeclimate.com/github/nyu-dss/aperitiiif/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/c25005f1fd12e7a86122/test_coverage)](https://codeclimate.com/github/nyu-dss/aperitiiif/test_coverage)
 
@@ -65,11 +65,8 @@ Contributions should:
 - Update tests as needed
 - Update documentation as needed
 
-To ensure the above, this repo includes configuration for [reek](https://github.com/troessner/reek) and [rubocop](https://github.com/rubocop/rubocop) as well as [rspec](https://rspec.info/) tests. You can run them respectively with the following commands:
+To ensure the above, this repo includes configuration for [rubocop](https://github.com/rubocop/rubocop) as well as [rspec](https://rspec.info/) tests. You can run them respectively with the following commands:
 
-```sh
-bundle exec reek
-```
 ```sh
 bundle exec rubocop -A
 ```

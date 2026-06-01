@@ -56,7 +56,6 @@ module Aperitiiif
       Parallel.map(items, in_threads: 4, progress: { format: "#{msg}: %c/%u | %P%" }, &:write_target_assets)
     end
 
-    # has smell :reek:TooManyStatements
     def write_presentation_json(items = self.items)
       msg = 'Writing IIIF Presentation JSON'.colorize(:cyan)
       load_records!

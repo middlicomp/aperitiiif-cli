@@ -23,7 +23,6 @@ module Aperitiiif
     end
 
     # rubocop: disable Metrics/AbcSize
-    # has smell :reek:TooManyStatements
     def write(**options)
       raise Aperitiiif::Error, "Index#write is missing required 'type:' option" unless options.key? :type
       raise Aperitiiif::Error, "Index#write 'type: #{options[:type]}' does not match available types #{VALID_TYPES}" unless VALID_TYPES.include? options[:type]
@@ -43,7 +42,6 @@ module Aperitiiif
       JSON.pretty_generate items.map(&:to_hash)
     end
 
-    # has smell :reek:DuplicateMethodCall
     def to_html(items = self.items, config = self.config)
       vars = {
         'items' => items.map(&:to_hash),

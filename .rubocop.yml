@@ -20,7 +20,7 @@ Layout/LineLength:
     - 'raise'
 
 Naming/RescuedExceptionsVariableName:
-  Enabled: false # conflicts with reek expectations
+  Enabled: false
 Metrics/ClassLength:
   Enabled: false
   

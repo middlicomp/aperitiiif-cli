@@ -8,11 +8,7 @@ require 'aperitiiif/asset'
 # to do
 module Aperitiiif
   # to do
-  # has smell :reek:InstanceVariableAssumption
-  # has smell :reek:TooManyInstanceVariables
-  # has smell :reek:TooManyMethods
   class Item
-    # has smell  :reek:Attribute
     attr_writer :record
     attr_reader :id, :asset_paths
 
@@ -95,7 +91,6 @@ module Aperitiiif
       "https://middlicomp.github.io/viewpoint/mirador/#manifests[]=#{CGI.escape manifest_url}&theme=light&thumbs=bottom&view=single&workspacecontrols=false"
     end
 
-    # has smell :reek: TooManyStatements
     def seed
       {
         '@id' => manifest_url,

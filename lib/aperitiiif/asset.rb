@@ -7,7 +7,6 @@ require 'vips'
 # to do
 module Aperitiiif
   # to do
-  # has smell :reek:TooManyMethods
   class Asset
     attr_reader :parent_id
 
@@ -96,7 +95,7 @@ module Aperitiiif
     end
 
     def full_resource_url
-      @full_resource_url ||= "#{@config.image_api_url}/#{id}/full/full/0/default.jpg"
+      @full_resource_url ||= "#{@config.image_api_url}/#{id}/full/max/0/default.jpg"
     end
 
     def service_url

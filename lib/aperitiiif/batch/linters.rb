@@ -23,7 +23,6 @@ module Aperitiiif
       linters.map(&:call)
     end
 
-    # has smell :reek:TooManyStatements
     def warn_nil_record_items
       nil_record_items = items.select { |item| item.record.to_s.empty? }
       return false if nil_record_items.empty?
@@ -32,8 +31,7 @@ module Aperitiiif
       nil_record_items.each { |item| puts Utils.rm_batch_namespace(item.id).colorize(:yellow) }
       true
     end
-
-    # has smell :reek:TooManyStatements
+    
     def warn_duplicate_record_ids
       ids     = records.map(&:id)
       dup_ids = ids.select { |id| ids.count(id) > 1 }.uniq
@@ -44,8 +42,6 @@ module Aperitiiif
       true
     end
 
-    # has smell :reek:DuplicateMethodCall
-    # has smell :reek:TooManyStatements
     # rubocop: disable Metrics/AbcSize
     def warn_duplicate_image_names
       files = Dir.glob("#{config.source_dir}/**/*").select { |file| File.file? file }
@@ -59,7 +55,6 @@ module Aperitiiif
     end
     # rubocop: enable Metrics/AbcSize
 
-    # has smell :reek:TooManyStatements
     def warn_missing_labels
       no_label_records = records.select { |record| record.label.to_s.empty? }
       return false if no_label_records.empty?
@@ -69,7 +64,6 @@ module Aperitiiif
       true
     end
 
-    # has smell :reek:TooManyStatements
     # rubocop:disable Metrics/AbcSize
     def warn_stray_files
       stray_files = Dir.glob("#{config.source_dir}/**/*")

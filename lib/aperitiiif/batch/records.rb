@@ -12,7 +12,6 @@ module Aperitiiif
       records.find { |record| record.id == item_id }
     end
 
-    # has smell :reek:DuplicateMethodCall
     def records_from_file(file = config.records_file, defaults = config.records_defaults)
       return [] unless records_file_configured? file
       return [] unless records_file_exists? file

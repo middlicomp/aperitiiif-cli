@@ -2,7 +2,6 @@
 
 # TO DO COMMENT
 module Aperitiiif
-  # has smell :reek:Attribute
   # TO DO COMMENT
   class Config
     attr_reader :namespace, :hash

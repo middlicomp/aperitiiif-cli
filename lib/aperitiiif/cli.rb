@@ -28,7 +28,6 @@ module Aperitiiif
       option :sample, type: :numeric, default: 0, desc: 'Limit the batch to the first N items for testing'
       option :image_format, type: :string, default: '', desc: 'Output image format: tif or jpg'
 
-      # has smells :reek:FeatureEnvy, :reek:TooManyStatements
       # rubocop:disable Metrics/AbcSize
       def build
         batch = Aperitiiif::Batch.new
