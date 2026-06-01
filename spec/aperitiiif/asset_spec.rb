@@ -52,11 +52,35 @@ RSpec.describe Aperitiiif::Asset do
     it 'returns tiff mime string' do
       expect(@asset.target_mime).to eq('image/tiff')
     end
+
+    it 'returns jpeg mime string when configured for jpg output' do
+      config = Aperitiiif::Config.new(@conf_opts.merge('image_output_format' => 'jpg'))
+      asset = Aperitiiif::Asset.new(@parent_id, @source, config)
+
+      FileUtils.rm(asset.target) if asset.target_written?
+      expect(asset.target_mime).to eq('image/jpeg')
+      expect(asset.target).to end_with('.jpg')
+    end
   end
 
   describe '.source_mime' do
     it 'returns jpeg mime string' do
       expect(@asset.source_mime).to eq('image/jpeg')
+    end
+  end
+
+  describe '.metadata' do
+    it 'returns metadata about the asset and its target' do
+      metadata = @asset.metadata
+      expect(metadata).to include(
+        'id' => @asset.id,
+        'source' => @source,
+        'width' => 1686,
+        'height' => 3000,
+        'source_mime' => 'image/jpeg'
+      )
+      expect(metadata['target']).to eq(@asset.target)
+      expect(metadata['target_written']).to be(true).or be(false)
     end
   end
 

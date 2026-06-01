@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require 'tmpdir'
 
 RSpec.describe Aperitiiif::Batch do
   before(:all) do
@@ -13,6 +14,23 @@ RSpec.describe Aperitiiif::Batch do
       it 'returns the config' do
         expect(@batch.config).to be_an(Aperitiiif::Config)
         expect(@batch.config.label).to eq('Rijksmuseum Demo')
+      end
+    end
+  end
+
+  describe 'sample mode' do
+    it 'limits items to the configured sample size' do
+      Dir.mktmpdir do |dir|
+        %w[item-a item-b item-c].each do |base|
+          path = File.join(dir, "#{base}.jpeg")
+          File.write(path, 'jpeg content')
+        end
+
+        batch = Aperitiiif::Batch.new
+        batch.load_config_hash({ 'label' => 'sample batch', 'presentation_api_url' => 'https://example.com', 'image_api_url' => 'https://example.com', 'source_dir' => dir })
+        batch.sample = 2
+
+        expect(batch.items.count).to eq(2)
       end
     end
   end

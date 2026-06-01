@@ -70,6 +70,26 @@ RSpec.describe Aperitiiif::Item do
     it 'returns a iiif manifest' do
       expect(@item.manifest).to be_a(IIIF::Presentation::Manifest)
     end
+
+    context 'when checkpoint metadata is present' do
+      it 'builds manifest without instantiating asset objects' do
+        checkpoint = {
+          'assets' => [
+            {
+              'id' => 'test_valid',
+              'width' => 1686,
+              'height' => 3000,
+              'target_mime' => 'image/tiff'
+            }
+          ]
+        }
+
+        item = Aperitiiif::Item.new(@id, [], @config, checkpoint: checkpoint)
+        expect(item.instance_variable_defined?(:@assets)).to be(false)
+        expect(item.manifest).to be_a(IIIF::Presentation::Manifest)
+        expect(item.instance_variable_defined?(:@assets)).to be(false)
+      end
+    end
   end
 
   describe '.label' do
@@ -92,6 +112,25 @@ RSpec.describe Aperitiiif::Item do
     context 'with valid assets' do
       it 'returns first valid url' do
         expect(@item.thumbnail_url).to start_with('https://')
+      end
+    end
+
+    context 'when checkpoint metadata is present' do
+      it 'returns thumbnail URL without loading assets' do
+        checkpoint = {
+          'assets' => [
+            {
+              'id' => 'test_valid',
+              'width' => 1686,
+              'height' => 3000,
+              'target_mime' => 'image/tiff'
+            }
+          ]
+        }
+
+        item = Aperitiiif::Item.new(@id, [], @config, checkpoint: checkpoint)
+        expect(item.instance_variable_defined?(:@assets)).to be(false)
+        expect(item.thumbnail_url).to eq('https://example.com/presentation/test_valid/square/250,/0/default.jpg')
       end
     end
   end

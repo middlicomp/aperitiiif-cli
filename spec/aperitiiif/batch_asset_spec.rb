@@ -14,30 +14,29 @@ RSpec.describe Aperitiiif::Assets do
     end
   end
 
-  describe '.child_assets' do
-    context 'when given path to a directory of files' do
-      it 'returns array of file paths in the directory' do
-        @path = 'spec/fixtures/src/data/valid/dir'
-        expect(@batch.child_assets(@path).count).to eq 2
-      end
-    end
-    context 'when given path to a single file' do
-      it 'returns array with that file path as only value' do
-        @path = 'spec/fixtures/src/data/valid/valid.jpeg'
-        expect(@batch.child_assets(@path).count).to eq 1
-      end
+  describe '.item_paths' do
+    it 'returns top-level source paths for items' do
+      expect(@batch.item_paths).to all(be_a(String))
+      expect(@batch.item_paths).not_to be_empty
     end
   end
 
-  describe '.map_to_assets' do
-    it 'returns array of assets' do
-      expect(@batch.map_to_assets.first).to be_an(Aperitiiif::Asset)
+  describe '.item_asset_paths' do
+    it 'returns the source file path for a single-file item' do
+      path = 'spec/fixtures/src/data/valid/valid.jpeg'
+      expect(@batch.item_asset_paths(path)).to eq [path]
+    end
+
+    it 'returns source file paths for a directory item' do
+      path = 'spec/fixtures/src/data/valid/dir'
+      expect(@batch.item_asset_paths(path).count).to eq 2
     end
   end
 
-  describe '.asset_map' do
-    it 'returns a hash map of parent items and their child assets' do
-      expect(@batch.asset_map).to be_a(Hash)
+  describe '.asset_paths' do
+    it 'returns a flat list of source asset paths' do
+      expect(@batch.asset_paths).to all(be_a(String))
+      expect(@batch.asset_paths).not_to be_empty
     end
   end
 end

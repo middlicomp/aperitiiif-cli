@@ -11,7 +11,8 @@ module Aperitiiif
     DEFAULT_VALUES = {
       'build_dir' => './build',
       'source_dir' => './src/data',
-      'service_namespace' => 'aperitiiif-batch'
+      'service_namespace' => 'aperitiiif-batch',
+      'image_output_format' => 'tif'
     }.freeze
 
     def initialize(seed = {})
@@ -35,6 +36,12 @@ module Aperitiiif
     def validate
       raise Aperitiiif::Error, "Config is missing a valid 'namespace' for the batch." if namespace.empty?
       raise Aperitiiif::Error, "Config is missing 'label' for the batch." if label.empty?
+      raise Aperitiiif::Error, "Unsupported image_output_format '#{image_output_format}'. Supported values are tif and jpg." unless %w[tif jpg].include?(image_output_format)
+    end
+
+    def image_output_format
+      format = @hash.fetch('image_output_format', 'tif').to_s.downcase
+      format == 'jpeg' ? 'jpg' : format
     end
 
     def batch_namespace(dir = nil)

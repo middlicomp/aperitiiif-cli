@@ -9,6 +9,7 @@ require 'aperitiiif/batch/assets'
 require 'aperitiiif/batch/items'
 require 'aperitiiif/batch/records'
 require 'aperitiiif/batch/linters'
+require 'aperitiiif/batch/checkpoints'
 
 # TO DO COMMENT
 module Aperitiiif
@@ -16,10 +17,15 @@ module Aperitiiif
   class Batch
     include Assets
     include Items
+    include Checkpoints
     include Linters
     include Records
 
-    def initialize; end
+    attr_accessor :sample
+
+    def initialize
+      @sample = nil
+    end
 
     DEFAULT_CONFIG_FILE = './config.yml'
 
@@ -45,9 +51,9 @@ module Aperitiiif
       puts 'Done ✓'.colorize(:green)
     end
 
-    def write_target_assets(assets = self.assets)
-      msg = 'Writing target image TIFs'.colorize(:cyan)
-      Parallel.map(assets, in_threads: 4, progress: { format: "#{msg}: %c/%u | %P%" }, &:write_to_target)
+    def write_target_assets(items = self.items)
+      msg = "Writing target image #{config.image_output_format.upcase}s".colorize(:cyan)
+      Parallel.map(items, in_threads: 4, progress: { format: "#{msg}: %c/%u | %P%" }, &:write_target_assets)
     end
 
     # has smell :reek:TooManyStatements

@@ -5,29 +5,30 @@ module Aperitiiif
   # TO DO COMMENT
   module Assets
     def assets
-      @assets ||= map_to_assets
+      @assets ||= items.flat_map(&:assets)
     end
 
-    def child_assets(path)
-      return [path] if Utils.valid_source?(path)
-      return [] unless File.directory? path
+    def item_paths(dir = config.source_dir, sample: nil)
+      paths = []
+      Dir.new(dir).each do |entry|
+        next if entry == '.' || entry == '..'
 
-      Dir.glob("#{path}/*").select { |sub| Utils.valid_source? sub }
-    end
+        path = File.join(dir, entry)
+        next unless Utils.valid_source?(path) || File.directory?(path)
+        next if Utils.item_assets_from_path(path).empty?
 
-    # has smell :reek:NestedIterators
-    def map_to_assets(mymap = asset_map)
-      mymap.flat_map { |id, vals| vals.map { |val| Asset.new id, val, config } }
-    end
-
-    def asset_map(dir = config.source_dir)
-      map = {}
-      Dir["#{dir}/*"].each do |path|
-        parent_id       = Utils.parent_id(path, dir)
-        children        = child_assets path
-        map[parent_id]  = children unless children.empty?
+        paths << path
+        break if sample.to_i.positive? && paths.size >= sample
       end
-      map
+      paths
+    end
+
+    def item_asset_paths(path)
+      Utils.item_assets_from_path(path)
+    end
+
+    def asset_paths
+      @asset_paths ||= item_paths.flat_map { |path| item_asset_paths(path) }
     end
   end
 end
