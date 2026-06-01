@@ -61,7 +61,7 @@ module Aperitiiif
     end
 
     def viewpoint_url
-      "https://dss.hosting.nyu.edu/viewpoint/mirador/#manifests[]=#{CGI.escape manifest_url}&theme=dark"
+      "https://middlicomp.github.io/viewpoint/mirador/#manifests[]=#{CGI.escape manifest_url}&theme=light&thumbs=bottom&view=single&workspacecontrols=false"
     end
 
     # has smell :reek: TooManyStatements
